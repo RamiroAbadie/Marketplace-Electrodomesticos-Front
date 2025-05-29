@@ -1,12 +1,38 @@
-# React + Vite
+# Marketplace Electrodomésticos - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Trabajo Práctico para la materia API**  
+Frontend del marketplace donde se venden electrodomésticos distópicos.  
+Diseño inspirado en una estética futurista estilo *Black Mirror*.  
 
-Currently, two official plugins are available:
+---
+## 🧪 Requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js 18 o superior
+- npm (incluido con Node.js)
+- Vite
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Cómo correr el proyecto
+
+1️⃣ Cloná el repositorio:
+
+```bash
+git clone https://github.com/tu-usuario/marketplace-frontend.git
+cd marketplace-frontend
+
+2️⃣ Instalá las dependencias:
+npm install
+
+3️⃣ Ejecutá el servidor de desarrollo:
+npm run dev
+
+4️⃣ Accedé a la app en tu navegador:
+http://localhost:5173
+
+## 🔗 Conexión con Backend
+Este proyecto consume la API REST del backend del Marketplace.
+⚠️ Asegurate de tener el backend corriendo en http://localhost:8080 o ajustar la URL de la API en los componentes.
+
+## 🧑‍💻 Autores
+Ramiro Abadie, Tobias Choclin, Valentino Ariotti, Patricio Assad
