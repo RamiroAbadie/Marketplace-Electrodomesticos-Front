@@ -20,13 +20,15 @@ Diseño inspirado en una estética futurista estilo *Black Mirror*.
 ```bash
 git clone https://github.com/tu-usuario/marketplace-frontend.git
 cd marketplace-frontend
-
+```
 2️⃣ Instalá las dependencias:
+```bash
 npm install
-
+```
 3️⃣ Ejecutá el servidor de desarrollo:
+```bash
 npm run dev
-
+```
 4️⃣ Accedé a la app en tu navegador:
 http://localhost:5173
 
