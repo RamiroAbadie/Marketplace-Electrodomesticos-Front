@@ -1,8 +1,8 @@
 # Marketplace Electrodomésticos - Frontend
 
 **Trabajo Práctico para la materia API**  
-Frontend del marketplace donde se venden electrodomésticos distópicos.  
-Diseño inspirado en una estética futurista estilo *Black Mirror*.  
+Frontend del marketplace donde se venden electrodomésticos.  
+👉 Este proyecto debe usarse junto con el repositorio [Marketplace-Electrodomesticos-Back](https://github.com/RamiroAbadie/Marketplace-Electrodomesticos-Back)
 
 ---
 ## 🧪 Requisitos
