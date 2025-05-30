@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
+import { Grid, Container, Typography } from "@mui/material";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
 
-  const API_URL = "http://localhost:8080/api/products"; // Cambiar si es necesario
+  const API_URL = "http://localhost:8080/api/products";
 
   useEffect(() => {
     fetch(API_URL)
@@ -14,12 +15,19 @@ const ProductList = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Lista de Productos</h2>
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-    </div>
+    <Container sx={{ mt: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        Lista de Productos
+      </Typography>
+      <Grid container spacing={2} justifyContent="center">
+        {products.map((p) => (
+          <Grid item key={p.id}>
+            <ProductCard product={p} />
+          </Grid>
+        ))}
+      </Grid>
+
+    </Container>
   );
 };
 

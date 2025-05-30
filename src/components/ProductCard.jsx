@@ -1,32 +1,68 @@
-import { Card, CardContent, CardMedia, Typography, Button } from "@mui/material";
+import { Card, CardContent, Typography, Button, Box } from "@mui/material";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+
+const CARD_WIDTH  = 260;   // ancho fijo
+const CARD_HEIGHT = 420;   // alto fijo
+const IMG_HEIGHT  = 180;   // alto de la foto/carrusel
 
 const ProductCard = ({ product }) => {
+  const multiple = product.images?.length > 1;
+
   return (
-    <Card sx={{ maxWidth: 300, m: 2 }}>
-      {product.image && (
-        <CardMedia
-          component="img"
-          height="200"
-          image={`data:image/jpeg;base64,${product.image}`}
-          alt={product.name}
-        />
-      )}
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+    <Card
+      sx={{ width: CARD_WIDTH, height: CARD_HEIGHT, m: 1, display: "flex", flexDirection: "column" }}
+    >
+      <Box sx={{ width: "100%", height: IMG_HEIGHT, overflow: "hidden" }}>
+        {multiple ? (
+          <Carousel
+            showArrows
+            showThumbs={false}
+            showStatus={false}
+            infiniteLoop
+            swipeable
+            emulateTouch
+          >
+            {product.images.map((img, i) => (
+              <div key={i}>
+                <img
+                  src={`data:image/jpeg;base64,${img}`}
+                  alt={`${product.name} ${i + 1}`}
+                  style={{ width: "100%", height: IMG_HEIGHT, objectFit: "cover" }}
+                />
+              </div>
+            ))}
+          </Carousel>
+        ) : (
+          <img
+            src={`data:image/jpeg;base64,${product.images[0]}`}
+            alt={product.name}
+            style={{ width: "100%", height: IMG_HEIGHT, objectFit: "cover" }}
+          />
+        )}
+      </Box>
+
+      {/* Contenido – usamos flexGrow para empujar el botón al fondo */}
+      <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+        <Typography variant="subtitle1" fontWeight="bold">
           {product.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {product.description}
         </Typography>
-        <Typography variant="h6" color="primary">
+        <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
           ${product.price}
         </Typography>
-        <Typography variant="caption" display="block">
+        <Typography variant="caption" sx={{ mb: 1 }}>
           Stock: {product.stock > 0 ? product.stock : "Sin stock"}
         </Typography>
-        <Button variant="contained" color="primary" sx={{ mt: 1 }}>
-          Agregar al carrito
-        </Button>
+
+        {/* Botón fijo abajo */}
+        <Box sx={{ mt: "auto" }}>
+          <Button variant="contained" fullWidth size="small">
+            Agregar al carrito
+          </Button>
+        </Box>
       </CardContent>
     </Card>
   );
