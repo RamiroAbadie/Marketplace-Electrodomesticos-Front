@@ -59,7 +59,7 @@ const ProductCard = ({ product }) => {
 
         {/* Botón fijo abajo */}
         <Box sx={{ mt: "auto" }}>
-          <Button variant="contained" fullWidth size="small">
+          <Button variant="contained" fullWidth size="small" className="glitch">
             Agregar al carrito
           </Button>
         </Box>
