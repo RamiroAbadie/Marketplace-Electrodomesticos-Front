@@ -24,6 +24,7 @@ a:hover {
 
 body {
   margin: 0;
+  padding-top: 64px;
   display: flex;
   place-items: center;
   min-width: 320px;
@@ -66,3 +67,10 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+@keyframes glitch {
+  2%, 64% { transform: translate(2px, 0) skew(0deg); }
+  4%, 60% { transform: translate(-2px, 0) skew(0deg); }
+}
+
+.glitch:hover { animation: glitch 0.4s linear infinite; }

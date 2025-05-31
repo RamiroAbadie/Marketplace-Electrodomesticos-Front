@@ -1,17 +1,84 @@
-import { Button, Typography, Container } from "@mui/material";
+/* src/views/Home.jsx */
+import { Box, Button, Container, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
-const Home = () => {
+export default function Home() {
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Typography variant="h3" gutterBottom>
-        Bienvenido al Marketplace
-      </Typography>
-      <Button component={Link} to="/products" variant="contained">
-        Comprar ahora
-      </Button>
-    </Container>
-  );
-};
+    <>
+      {/* HERO */}
+      <Box
+        sx={{
+          width: "100vw",
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          background:
+            "linear-gradient(135deg, #081a3c 0%, #1a005a 50%, #26004d 100%)",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        {/* scan-lines overlay */}
+        <Box
+          sx={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.02) 3px)",
+            pointerEvents: "none",
+          }}
+        />
 
-export default Home;
+        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
+          <Typography
+            variant="h2"
+            sx={{
+              fontFamily: "'Orbitron', sans-serif",
+              color: "#fff",
+              fontWeight: 700,
+              mb: 2,
+            }}
+          >
+            Tecnología del Mañana,
+            <br />
+            Hoy.
+          </Typography>
+
+          <Typography
+            variant="h5"
+            sx={{ color: "rgba(255,255,255,0.8)", maxWidth: 600, mb: 4 }}
+          >
+            En Nexus Electronics, no esperamos al futuro. Lo creamos. Nuestros dispositivos revolucionarios
+            transforman lo imposible en cotidiano, llevando la evolución tecnológica directamente a tus
+            manos.
+          </Typography>
+
+          <Button
+            component={Link}
+            to="/products"
+            size="large"
+            variant="contained"
+            className="glitch"
+            sx={{
+              px: 4,
+              fontWeight: "bold",
+              background: "#00e0ff",
+              color: "#001b36",
+              boxShadow: "0 0 12px #00e0ff",
+              transition: "transform .3s, box-shadow .3s",
+              "&:hover": {
+                transform: "translateY(-4px)",
+                boxShadow: "0 0 20px #00e0ff",
+                background: "#00e0ff",
+              },
+            }}
+          >
+            Explorar catálogo
+          </Button>
+        </Container>
+      </Box>
+
+      {/* ...Ventajas, Banner, Preview products, Footer (secciones similares) */}
+    </>
+  );
+}
