@@ -73,6 +73,22 @@ export default function Home() {
             Explorar catálogo
           </Button>
         </Container>
+
+                {/* LOGO decorativo */}
+        <Box
+          component="img"
+          src="/NexusElectronics Logo (tinify).png"
+          alt="Logo NE"
+          sx={{
+            position: "absolute",
+            right: { xs: -60, md: -40 },
+            bottom: { xs: -20, md: -10 },
+            width: { xs: "60vw", md: "420px" },
+            maxWidth: "600px",
+            opacity: 0.9,
+            pointerEvents: "none",
+          }}
+        />
       </Box>
 
       {/* ...Ventajas, Banner, Preview products, Footer (secciones similares) */}

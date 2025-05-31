@@ -49,7 +49,7 @@ export default function Products() {
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <SearchIcon color="action" />
+              <SearchIcon color="primary" />
             </InputAdornment>
           ),
         }}
