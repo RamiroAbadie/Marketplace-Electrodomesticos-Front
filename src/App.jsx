@@ -1,23 +1,24 @@
-// src/App.jsx
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Home from "./views/Home";
 import Products from "./views/Products";
-import Cart from "./components/Cart";
-import Login from "./components/Login";
+//import Cart from "./views/Cart";
+//import Login from "./views/Login";
 
-const App = () => {
+function App() {
   return (
-    <Router>
-      <NavBar />
+    <BrowserRouter>
+      <NavBar />        {/* único AppBar, fuera de todo */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
+        {/**
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
+        */}
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
-};
+}
 
 export default App;

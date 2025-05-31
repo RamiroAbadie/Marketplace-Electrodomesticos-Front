@@ -15,18 +15,22 @@ const ProductList = () => {
   }, []);
 
   return (
-    <Container sx={{ mt: 4 }}>
+    <Container maxWidth="xl" sx={{ mt: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Lista de Productos
+        Productos
       </Typography>
-      <Grid container spacing={2} justifyContent="center">
-        {products.map((p) => (
-          <Grid item key={p.id}>
-            <ProductCard product={p} />
+
+      <Grid
+        container
+        spacing={{ xs: 2, md: 3 }}
+        justifyContent="center"
+      >
+        {products.map((prod) => (
+          <Grid item key={prod.id}>
+            <ProductCard product={prod} />
           </Grid>
         ))}
       </Grid>
-
     </Container>
   );
 };

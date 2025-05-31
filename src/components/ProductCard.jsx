@@ -17,7 +17,7 @@ const ProductCard = ({ product }) => {
         {multiple ? (
           <Carousel
             showArrows
-            showThumbs={false}
+            showThumbs={true}
             showStatus={false}
             infiniteLoop
             swipeable
