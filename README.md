@@ -25,6 +25,12 @@ cd marketplace-frontend
 ```bash
 npm install
 ```
+```bash
+npm install @mui/material @emotion/react @emotion/styled @mui/icons-material 
+```
+```bash
+npm install react-responsive-carousel
+```
 3️⃣ Ejecutá el servidor de desarrollo:
 ```bash
 npm run dev
