@@ -12,8 +12,7 @@ export default function Home() {
           minHeight: "100vh",
           display: "flex",
           alignItems: "center",
-          background:
-            "linear-gradient(135deg, #081a3c 0%, #1a005a 50%, #26004d 100%)",
+          backgroundColor: "black",
           position: "relative",
           overflow: "hidden",
         }}
@@ -48,9 +47,7 @@ export default function Home() {
             variant="h5"
             sx={{ color: "rgba(255,255,255,0.8)", maxWidth: 600, mb: 4 }}
           >
-            En Nexus Electronics, no esperamos al futuro. Lo creamos. Nuestros dispositivos revolucionarios
-            transforman lo imposible en cotidiano, llevando la evolución tecnológica directamente a tus
-            manos.
+            En Nexus Electronics, no esperamos al futuro.<br/>Lo creamos.
           </Typography>
 
           <Button

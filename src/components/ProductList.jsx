@@ -16,10 +16,6 @@ const ProductList = () => {
 
   return (
     <Container maxWidth="xl" sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Productos
-      </Typography>
-
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}

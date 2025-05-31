@@ -1,9 +1,9 @@
 import ProductList from "../components/ProductList";
+import { Typography } from "@mui/material";
 
 const Products = () => {
   return (
     <div>
-      <h2>Productos</h2>
       <ProductList />
     </div>
   );
