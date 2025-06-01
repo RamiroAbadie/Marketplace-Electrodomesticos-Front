@@ -12,7 +12,7 @@ export default function Home() {
           minHeight: "100vh",
           display: "flex",
           alignItems: "center",
-          backgroundColor: "black",
+          background: "linear-gradient(135deg,#040404 0%,#060320 40%,#05003d 100%)",
           position: "relative",
           overflow: "hidden",
         }}
