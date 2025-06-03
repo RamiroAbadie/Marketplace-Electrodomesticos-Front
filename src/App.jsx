@@ -6,6 +6,9 @@ import Login from "./views/Login";
 import Register from "./views/Register";
 import Checkout from "./views/Checkout";
 //import Cart from "./views/Cart";
+import AdminDashboard from "./views/AdminDashboard";
+import PrivateRoute   from "./components/PrivateRoute";
+import Profile from "./views/Profile";
 
 function App() {
   return (
