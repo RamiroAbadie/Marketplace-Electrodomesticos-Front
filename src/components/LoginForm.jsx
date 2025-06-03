@@ -1,4 +1,3 @@
-// src/components/LoginForm.jsx
 import {
     Box,
     Button,
@@ -17,7 +16,7 @@ export default function LoginForm() {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://localhost:8080/api/login", {
+            const res = await fetch("http://localhost:8080/api/v1/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
@@ -26,10 +25,18 @@ export default function LoginForm() {
             if (!res.ok) throw new Error("Login fallido");
 
             const data = await res.json();
-            console.log("Token recibido:", data.token); // Guardar token, redirigir, etc.
+            const token = data.access_token;
+
+            // Guardar el token en localStorage
+            localStorage.setItem("token", token);
+            console.log("Token guardado:", token);
+
+            // Redirigir al home (o dashboard)
+            window.location.href = "/";
 
         } catch (err) {
             console.error("Error en login:", err.message);
+            alert("Credenciales incorrectas.");
         }
     };
 

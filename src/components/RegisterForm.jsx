@@ -12,7 +12,6 @@ export default function RegisterForm() {
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
-    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirm, setConfirm] = useState("");
 
@@ -24,7 +23,31 @@ export default function RegisterForm() {
             return;
         }
 
-        // Todavía no tocamos esto
+        try {
+            const res = await fetch("http://localhost:8080/api/v1/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    firstname,
+                    lastname,
+                    email,
+                    password,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) throw new Error(data.message || "Registro fallido");
+
+            const token = data.access_token;
+            localStorage.setItem("token", token);
+            console.log("Token guardado:", token);
+
+            window.location.href = "/";
+        } catch (err) {
+            console.error("Error en registro:", err.message);
+            alert(err.message);
+        }
     };
 
     return (
@@ -64,15 +87,6 @@ export default function RegisterForm() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    InputProps={{ sx: { color: "white" } }}
-                    InputLabelProps={{ sx: { color: "white" } }}
-                />
-                <TextField
-                    label="Nombre de usuario"
-                    fullWidth
-                    required
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
                     InputProps={{ sx: { color: "white" } }}
                     InputLabelProps={{ sx: { color: "white" } }}
                 />
