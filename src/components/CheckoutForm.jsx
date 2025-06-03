@@ -10,21 +10,43 @@ import {
     MenuItem,
     Box,
 } from "@mui/material";
-import {useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function CheckoutForm() {
     const navigate = useNavigate();
     const location = useLocation();
     const product = location.state?.product;
-    console.log("Producto recibido:", product);
+
+    // Estados para los campos del cliente
+    const [fullName, setFullName] = useState("");
+    const [address, setAddress] = useState("");
+    const [zip, setZip] = useState("");
+    const [city, setCity] = useState("");
+
+    // Estado del método de pago
+    const [paymentMethod, setPaymentMethod] = useState("tarjeta");
+    const [cardNumber, setCardNumber] = useState("");
+    const [expiry, setExpiry] = useState("");
+    const [cardHolder, setCardHolder] = useState("");
+    const [cvv, setCvv] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Validación
+        if (
+            !fullName || !address || !zip || !city ||
+            !cardNumber || !expiry || !cardHolder || !cvv
+        ) {
+            alert("Completá todos los campos del formulario.");
+            return;
+        }
+
         const token = localStorage.getItem("token");
         if (!token) {
             alert("Debés iniciar sesión para realizar la compra.");
-            navigate("/login")
+            navigate("/login");
             return;
         }
 
@@ -47,8 +69,11 @@ export default function CheckoutForm() {
 
             if (!res.ok) throw new Error("Error al crear la orden");
 
+            const data = await res.json();
+            localStorage.setItem("lastOrder", JSON.stringify(data));
+
             alert("Orden confirmada 🚀");
-            window.location.href = "/";
+            window.location.href = "/confirmation";
         } catch (err) {
             console.error(err);
             alert("Hubo un problema al crear la orden");
@@ -57,85 +82,68 @@ export default function CheckoutForm() {
 
     return (
         <form onSubmit={handleSubmit}>
-            <Grid
-                container
-                spacing={4}
-                alignItems="flex-start"
-                justifyContent="space-between"
-                wrap="nowrap"
-            >
+            <Grid container spacing={4} alignItems="flex-start" justifyContent="space-between" wrap="nowrap">
                 {/* 1 - Cliente */}
                 <Grid item xs={4}>
-                    <Paper
-                        sx={{
-                            p: 3,
-                            backgroundColor: "rgba(20, 20, 60, 0.7)",
-                            color: "#fff",
-                            borderRadius: 2,
-                        }}
-                    >
+                    <Paper sx={{ p: 3, backgroundColor: "rgba(20, 20, 60, 0.7)", color: "#fff", borderRadius: 2 }}>
                         <Typography variant="h6" fontFamily="'Orbitron', sans-serif" mb={2}>
                             Datos del Cliente
                         </Typography>
-
-                        <TextField fullWidth label="Nombre y Apellido" variant="filled" margin="normal"
+                        <TextField label="Nombre y Apellido" fullWidth variant="filled" margin="normal"
+                                   value={fullName} onChange={(e) => setFullName(e.target.value)}
                                    InputProps={{ sx: { color: "#fff" } }} InputLabelProps={{ sx: { color: "#ccc" } }} />
-                        <TextField fullWidth label="Dirección y Número" variant="filled" margin="normal"
+                        <TextField label="Dirección y Número" fullWidth variant="filled" margin="normal"
+                                   value={address} onChange={(e) => setAddress(e.target.value)}
                                    InputProps={{ sx: { color: "#fff" } }} InputLabelProps={{ sx: { color: "#ccc" } }} />
-                        <TextField fullWidth label="Código Postal" variant="filled" margin="normal"
+                        <TextField label="Código Postal" fullWidth variant="filled" margin="normal"
+                                   value={zip} onChange={(e) => setZip(e.target.value)}
                                    InputProps={{ sx: { color: "#fff" } }} InputLabelProps={{ sx: { color: "#ccc" } }} />
-                        <TextField fullWidth label="Localidad" variant="filled" margin="normal"
+                        <TextField label="Localidad" fullWidth variant="filled" margin="normal"
+                                   value={city} onChange={(e) => setCity(e.target.value)}
                                    InputProps={{ sx: { color: "#fff" } }} InputLabelProps={{ sx: { color: "#ccc" } }} />
                     </Paper>
                 </Grid>
 
                 {/* 2 - Pago */}
                 <Grid item xs={4}>
-                    <Paper
-                        sx={{
-                            p: 3,
-                            backgroundColor: "rgba(20, 20, 60, 0.7)",
-                            color: "#fff",
-                            borderRadius: 2,
-                        }}
-                    >
+                    <Paper sx={{ p: 3, backgroundColor: "rgba(20, 20, 60, 0.7)", color: "#fff", borderRadius: 2 }}>
                         <Typography variant="h6" fontFamily="'Orbitron', sans-serif" mb={2}>
                             Método de Pago
                         </Typography>
-
                         <FormControl fullWidth margin="normal" variant="filled">
                             <InputLabel sx={{ color: "#ccc" }}>Método</InputLabel>
-                            <Select defaultValue="tarjeta" sx={{ color: "#fff" }}>
+                            <Select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} sx={{ color: "#fff" }}>
                                 <MenuItem value="tarjeta">Tarjeta de crédito</MenuItem>
                                 <MenuItem value="debito">Tarjeta de débito</MenuItem>
                             </Select>
                         </FormControl>
-
-                        <TextField fullWidth label="Número de tarjeta" variant="filled" margin="normal"
+                        <TextField label="Número de tarjeta" fullWidth variant="filled" margin="normal"
+                                   value={cardNumber} onChange={(e) => setCardNumber(e.target.value)}
                                    InputProps={{ sx: { color: "#fff" } }} InputLabelProps={{ sx: { color: "#ccc" } }} />
-                        <TextField fullWidth label="Fecha de vencimiento" variant="filled" margin="normal" placeholder="MM/AA"
+                        <TextField label="Fecha de vencimiento" placeholder="MM/AA" fullWidth variant="filled" margin="normal"
+                                   value={expiry} onChange={(e) => setExpiry(e.target.value)}
                                    InputProps={{ sx: { color: "#fff" } }} InputLabelProps={{ sx: { color: "#ccc" } }} />
-                        <TextField fullWidth label="Nombre del titular" variant="filled" margin="normal"
+                        <TextField label="Nombre del titular" fullWidth variant="filled" margin="normal"
+                                   value={cardHolder} onChange={(e) => setCardHolder(e.target.value)}
                                    InputProps={{ sx: { color: "#fff" } }} InputLabelProps={{ sx: { color: "#ccc" } }} />
-                        <TextField fullWidth label="Código de seguridad" type="password" variant="filled" margin="normal"
+                        <TextField label="Código de seguridad" type="password" fullWidth variant="filled" margin="normal"
+                                   value={cvv} onChange={(e) => setCvv(e.target.value)}
                                    InputProps={{ sx: { color: "#fff" } }} InputLabelProps={{ sx: { color: "#ccc" } }} />
                     </Paper>
                 </Grid>
 
                 {/* 3 - Producto + botón */}
                 <Grid item xs={4}>
-                    <Paper
-                        sx={{
-                            p: 3,
-                            backgroundColor: "rgba(20, 20, 60, 0.7)",
-                            color: "#fff",
-                            borderRadius: 2,
-                            height: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                        }}
-                    >
+                    <Paper sx={{
+                        p: 3,
+                        backgroundColor: "rgba(20, 20, 60, 0.7)",
+                        color: "#fff",
+                        borderRadius: 2,
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                    }}>
                         <Box>
                             <Typography variant="h6" fontFamily="'Orbitron', sans-serif" mb={2}>
                                 Producto

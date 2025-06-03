@@ -49,7 +49,7 @@ export default function Profile() {
 
                         <Typography variant="h6">Email:</Typography>
                         <Typography mb={2}>{user.email}</Typography>
-                        
+
                     </>
                 ) : (
                     <Typography>Cargando usuario...</Typography>

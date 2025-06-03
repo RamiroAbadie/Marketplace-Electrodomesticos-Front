@@ -9,6 +9,7 @@ import Checkout from "./views/Checkout";
 import AdminDashboard from "./views/AdminDashboard";
 import PrivateRoute   from "./components/PrivateRoute";
 import Profile from "./views/Profile";
+import Confirmation from "./views/Confirmation";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/confirmation" element={<Confirmation />} />
         {/**Profile
         <Route path="/cart" element={<Cart />} />
 
