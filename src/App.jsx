@@ -6,8 +6,6 @@ import Login from "./views/Login";
 import Register from "./views/Register";
 import Checkout from "./views/Checkout";
 //import Cart from "./views/Cart";
-import AdminDashboard from "./views/AdminDashboard";
-import PrivateRoute   from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -19,7 +17,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/checkout" element={<Checkout />} />
-        {/**
+        <Route path="/profile" element={<Profile />} />
+        {/**Profile
         <Route path="/cart" element={<Cart />} />
 
         */}
