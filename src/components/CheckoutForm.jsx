@@ -10,15 +10,53 @@ import {
     MenuItem,
     Box,
 } from "@mui/material";
+import {useLocation, useNavigate} from "react-router-dom";
 
 export default function CheckoutForm() {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const product = location.state?.product;
+    console.log("Producto recibido:", product);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("Debés iniciar sesión para realizar la compra.");
+            navigate("/login")
+            return;
+        }
+
+        try {
+            const res = await fetch("http://localhost:8080/api/orders", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    items: [
+                        {
+                            productId: product.id,
+                            quantity: 1,
+                        },
+                    ],
+                }),
+            });
+
+            if (!res.ok) throw new Error("Error al crear la orden");
+
+            alert("Orden confirmada 🚀");
+            window.location.href = "/";
+        } catch (err) {
+            console.error(err);
+            alert("Hubo un problema al crear la orden");
+        }
+    };
+
     return (
-        <form
-            onSubmit={(e) => {
-                e.preventDefault();
-                alert("Orden confirmada 🚀");
-            }}
-        >
+        <form onSubmit={handleSubmit}>
             <Grid
                 container
                 spacing={4}
@@ -103,10 +141,10 @@ export default function CheckoutForm() {
                                 Producto
                             </Typography>
                             <Typography variant="body1" mb={1}>
-                                Producto: <strong>Teclado Mecánico RGB</strong>
+                                Producto: <strong>{product?.description || "Sin nombre"}</strong>
                             </Typography>
                             <Typography variant="body1" mb={1}>
-                                Precio: <strong>$12.999</strong>
+                                Precio: <strong>${product?.price?.toLocaleString() || "0"}</strong>
                             </Typography>
                             <Typography variant="body2" mb={2}>
                                 Cantidad: 1 unidad

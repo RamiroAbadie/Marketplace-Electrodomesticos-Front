@@ -16,7 +16,7 @@ export default function LoginForm() {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://localhost:8080/api/v1/auth/login", {
+            const res = await fetch("http://localhost:8080/api/v1/auth/authenticate", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
@@ -25,20 +25,20 @@ export default function LoginForm() {
             if (!res.ok) throw new Error("Login fallido");
 
             const data = await res.json();
-            const token = data.access_token;
 
-            // Guardar el token en localStorage
-            localStorage.setItem("token", token);
-            console.log("Token guardado:", token);
+            // Guardar token y usuario
+            localStorage.setItem("token", data.access_token);
+            localStorage.setItem("user", JSON.stringify(data.user));
 
-            // Redirigir al home (o dashboard)
+            console.log("Login exitoso:", data.user);
+
             window.location.href = "/";
-
         } catch (err) {
             console.error("Error en login:", err.message);
             alert("Credenciales incorrectas.");
         }
     };
+
 
     return (
         <Box

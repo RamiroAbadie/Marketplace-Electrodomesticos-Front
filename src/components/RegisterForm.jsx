@@ -27,28 +27,26 @@ export default function RegisterForm() {
             const res = await fetch("http://localhost:8080/api/v1/auth/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    firstname,
-                    lastname,
-                    email,
-                    password,
-                }),
+                body: JSON.stringify({ firstname, lastname, email, password }),
             });
+
+            if (!res.ok) throw new Error("Registro fallido");
 
             const data = await res.json();
 
-            if (!res.ok) throw new Error(data.message || "Registro fallido");
+            // Guardar token y usuario
+            localStorage.setItem("token", data.access_token);
+            localStorage.setItem("user", JSON.stringify(data.user));
 
-            const token = data.access_token;
-            localStorage.setItem("token", token);
-            console.log("Token guardado:", token);
+            console.log("Registro exitoso:", data.user);
 
             window.location.href = "/";
         } catch (err) {
             console.error("Error en registro:", err.message);
-            alert(err.message);
+            alert("Hubo un problema al registrar la cuenta.");
         }
     };
+
 
     return (
         <Box
