@@ -5,7 +5,7 @@ import Products from "./views/Products";
 import Login from "./views/Login";
 import Register from "./views/Register";
 import Checkout from "./views/Checkout";
-//import Cart from "./views/Cart";
+import Profile from "./views/Profile";
 
 function App() {
   return (
@@ -17,7 +17,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/checkout" element={<Checkout />} />
-        {/**
+        <Route path="/profile" element={<Profile />} />
+        {/**Profile
         <Route path="/cart" element={<Cart />} />
 
         */}
