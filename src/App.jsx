@@ -2,8 +2,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Home from "./views/Home";
 import Products from "./views/Products";
+import Login from "./views/Login";
+import Register from "./views/Register";
+import Checkout from "./views/Checkout";
 //import Cart from "./views/Cart";
-//import Login from "./views/Login";
 
 function App() {
   return (
@@ -12,9 +14,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/checkout" element={<Checkout />} />
         {/**
         <Route path="/cart" element={<Cart />} />
-        <Route path="/login" element={<Login />} />
+
         */}
       </Routes>
     </BrowserRouter>

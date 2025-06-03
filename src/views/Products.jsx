@@ -8,6 +8,7 @@ import {
   CircularProgress,
   Typography,
 } from "@mui/material";
+
 import SearchIcon from "@mui/icons-material/Search";
 import FilterSidebar from "../components/FilterSideBar";
 import ProductCard from "../components/ProductCard";
@@ -73,19 +74,37 @@ export default function Products() {
 
       <Container maxWidth="xl" sx={{ py: 4 }} >
         <TextField
-          fullWidth
-          placeholder="Buscar producto…"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          sx={{ mb: 3 }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon color="primary" />
-              </InputAdornment>
-            ),
-          }}
+            fullWidth
+            placeholder="Buscar producto…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            sx={{ mb: 3 }}
+            InputProps={{
+              startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon sx={{ color: 'white' }} />
+                  </InputAdornment>
+              ),
+              sx: {
+                color: 'white',
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'white',
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'lightblue',
+                },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#00e0ff',
+                },
+              },
+            }}
+            inputProps={{
+              style: {
+                color: 'white',
+              },
+            }}
         />
+
 
         {loading ? (
           <Box textAlign="center" mt={4}>

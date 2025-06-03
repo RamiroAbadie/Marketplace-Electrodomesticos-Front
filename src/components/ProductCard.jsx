@@ -1,12 +1,14 @@
 import { Card, CardContent, Typography, Button, Box } from "@mui/material";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { useNavigate } from "react-router-dom";
 
 const CARD_WIDTH  = 260;   // ancho fijo
 const CARD_HEIGHT = 420;   // alto fijo
 const IMG_HEIGHT  = 180;   // alto de la foto/carrusel
 
 const ProductCard = ({ product }) => {
+  const navigate = useNavigate();
   const multiple = product.images?.length > 1;
 
   return (
@@ -59,7 +61,7 @@ const ProductCard = ({ product }) => {
 
         {/* Botón fijo abajo */}
         <Box sx={{ mt: "auto" }}>
-          <Button variant="contained" fullWidth size="small" className="glitch">
+          <Button variant="contained" fullWidth size="small" className="glitch"  onClick={() => navigate("/checkout")}>
             Agregar al carrito
           </Button>
         </Box>
