@@ -7,6 +7,7 @@ import {
     Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { isAdmin } from "../utils/auth";
 
 export default function LoginForm() {
     const [email, setEmail] = useState("");
@@ -32,7 +33,7 @@ export default function LoginForm() {
 
             console.log("Login exitoso:", data.user);
 
-            window.location.href = "/";
+            window.location.href = isAdmin() ? "/admin" : "/";;
         } catch (err) {
             console.error("Error en login:", err.message);
             alert("Credenciales incorrectas.");

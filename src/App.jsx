@@ -6,6 +6,8 @@ import Login from "./views/Login";
 import Register from "./views/Register";
 import Checkout from "./views/Checkout";
 //import Cart from "./views/Cart";
+import AdminDashboard from "./views/AdminDashboard";
+import PrivateRoute   from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -21,6 +23,12 @@ function App() {
         <Route path="/cart" element={<Cart />} />
 
         */}
+
+
+        {/** RUTAS ADMIN */}
+        <Route element={<PrivateRoute adminOnly />}>
+          <Route path="/admin/*" element={<AdminDashboard />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
