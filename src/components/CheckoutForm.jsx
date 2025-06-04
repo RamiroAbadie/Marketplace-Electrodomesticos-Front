@@ -34,12 +34,52 @@ export default function CheckoutForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validación
-        if (
-            !fullName || !address || !zip || !city ||
-            !cardNumber || !expiry || !cardHolder || !cvv
-        ) {
-            alert("Completá todos los campos del formulario.");
+        // Validaciones de formato
+        const nameRegex = /^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]+$/;
+        const addressRegex = /^[A-Za-z0-9\s]+$/;
+        const zipRegex = /^\d{4,8}$/;
+        const cardNumberRegex = /^\d{15}$/;
+        const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/; // mm/yy
+        const cardHolderRegex = /^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]+$/;
+        const cvvRegex = /^\d{3}$/;
+
+        if (!nameRegex.test(fullName)) {
+            alert("El nombre y apellido solo puede contener letras.");
+            return;
+        }
+
+        if (!addressRegex.test(address)) {
+            alert("La dirección no debe contener símbolos especiales.");
+            return;
+        }
+
+        if (!zipRegex.test(zip)) {
+            alert("El código postal debe contener solo números (entre 4 y 8 dígitos).");
+            return;
+        }
+
+        if (!nameRegex.test(city)) {
+            alert("La localidad solo puede contener letras.");
+            return;
+        }
+
+        if (!cardNumberRegex.test(cardNumber)) {
+            alert("El número de tarjeta debe tener 15 dígitos.");
+            return;
+        }
+
+        if (!expiryRegex.test(expiry)) {
+            alert("La fecha de vencimiento debe tener el formato MM/AA.");
+            return;
+        }
+
+        if (!cardHolderRegex.test(cardHolder)) {
+            alert("El nombre del titular solo puede contener letras.");
+            return;
+        }
+
+        if (!cvvRegex.test(cvv)) {
+            alert("El código de seguridad debe tener exactamente 3 números.");
             return;
         }
 
@@ -79,6 +119,7 @@ export default function CheckoutForm() {
             alert("Hubo un problema al crear la orden");
         }
     };
+
 
     return (
         <form onSubmit={handleSubmit}>
