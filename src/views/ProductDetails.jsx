@@ -1,10 +1,12 @@
 import { Box, Typography, Container, Button } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+import { isAdmin } from "../utils/auth.js";
 
 export default function ProductDetails() {
     const { state } = useLocation();
     const navigate = useNavigate();
     const product = state?.product;
+    const admin    = isAdmin();
 
     if (!product) {
         return (
@@ -76,21 +78,23 @@ export default function ProductDetails() {
                         Stock disponible: {product.stock}
                     </Typography>
 
-                    <Button
-                        variant="contained"
-                        onClick={handleBuyNow}
-                        sx={{
-                            alignSelf: "start",
-                            px: 4,
-                            py: 1.5,
-                            fontWeight: "bold",
-                            fontSize: "1rem",
-                            backgroundColor: "#9c27b0",
-                            "&:hover": { backgroundColor: "#7b1fa2" },
-                        }}
-                    >
-                        Comprar ahora
-                    </Button>
+                    {!admin && (
+                        <Button
+                            variant="contained"
+                            onClick={handleBuyNow}
+                            sx={{
+                                alignSelf: "start",
+                                px: 4,
+                                py: 1.5,
+                                fontWeight: "bold",
+                                fontSize: "1rem",
+                                backgroundColor: "#9c27b0",
+                                "&:hover": { backgroundColor: "#7b1fa2" },
+                            }}
+                        >
+                            Comprar ahora
+                        </Button>
+                    )}
                 </Box>
             </Box>
         </Box>
