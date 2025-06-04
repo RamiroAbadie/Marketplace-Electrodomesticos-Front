@@ -66,7 +66,11 @@ export default function ProductDetails() {
 
                 {/* Info */}
                 <Box sx={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                    <Typography variant="h3" sx={{ fontWeight: "bold", color: "#ffffff", mb: 2 }}>
+                    <Typography
+                        variant="h3"
+                        color="#ffffff"
+                        sx={{ fontFamily: "'Orbitron', sans-serif", mb: 3 }}
+                    >
                         {product.description}
                     </Typography>
 
@@ -83,13 +87,16 @@ export default function ProductDetails() {
                             variant="contained"
                             onClick={handleBuyNow}
                             sx={{
-                                alignSelf: "start",
-                                px: 4,
-                                py: 1.5,
                                 fontWeight: "bold",
-                                fontSize: "1rem",
-                                backgroundColor: "#9c27b0",
-                                "&:hover": { backgroundColor: "#7b1fa2" },
+                                background: "#00e0ff",
+                                color: "#001b36",
+                                boxShadow: "0 0 12px #00e0ff",
+                                transition: "transform .3s, box-shadow .3s",
+                                "&:hover": {
+                                    transform: "translateY(-4px)",
+                                    boxShadow: "0 0 20px #00e0ff",
+                                    background: "#00e0ff",
+                                },
                             }}
                         >
                             Comprar ahora

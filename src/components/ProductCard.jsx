@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { isAdmin } from "../utils/auth.js";
 
 const CARD_WIDTH  = 260;
-const CARD_HEIGHT = 360;
+const CARD_HEIGHT = 400;
 const IMG_HEIGHT  = 180;
 
 export default function ProductCard({ product }) {
@@ -37,7 +37,7 @@ export default function ProductCard({ product }) {
                 display: "flex",
                 flexDirection: "column",
                 cursor: "default", // evitamos que parezca todo clickeable
-                backgroundColor: "#2e1755",
+                backgroundColor: "#281c61",
                 color: "#ffffff",
                 borderRadius: 3,
                 boxShadow: 4,
@@ -85,9 +85,14 @@ export default function ProductCard({ product }) {
                 }}
             >
 
-                <Typography variant="h5" color="#ffffff">
+                <Typography
+                    variant="h6"
+                    color="#ffffff"
+                    sx={{ fontFamily: "'Orbitron', sans-serif" }}
+                >
                     {product.description}
                 </Typography>
+
                 <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
                     ${product.price}
                 </Typography>
@@ -103,7 +108,19 @@ export default function ProductCard({ product }) {
                             size="small"
                             disabled={product.stock <= 0}
                             onClick={handleAddToCart}
-                            sx={{ fontWeight: "bold" }}
+                            sx={{
+                                fontWeight: "bold",
+                                background: "#00e0ff",
+                                color: "#001b36",
+                                boxShadow: "0 0 12px #00e0ff",
+                                transition: "transform .3s, box-shadow .3s",
+                                "&:hover": {
+                                    transform: "translateY(-4px)",
+                                    boxShadow: "0 0 20px #00e0ff",
+                                    background: "#00e0ff",
+                                },
+
+                        }}
                         >
                             Agregar al carrito
                         </Button>
