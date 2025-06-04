@@ -47,9 +47,8 @@ const ACTIONS = [
   { label: "Eliminar categoría",  method: "DELETE", path: "/api/categories/{id}" },
 
   { label: "Obtener usuario por ID", method: "GET", path: "/api/users/{id}" },
-  { label: "Eliminar usuario",       method: "DELETE", path: "/api/users/{id}" },
 
-  { label: "Listar órdenes",      method: "GET",  path: "/api/orders" },
+  { label: "Listar órdenes por ID usuario",      method: "GET",  path: "/api/orders/user/{id}" },
   { label: "Obtener orden por ID",method: "GET",  path: "/api/orders/{id}" }
 ];
 
