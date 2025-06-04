@@ -1,5 +1,6 @@
 // -------------------------------------------------------------
 // AdminDashboard.jsx  (FINAL v4 — Preview sin campo 'images')
+// AdminDashboard.jsx  (FINAL v4 — Preview sin campo 'images')
 // -------------------------------------------------------------
 import {
   Box,
@@ -45,12 +46,15 @@ const ACTIONS = [
   { label: "Obtener usuario por ID", method: "GET", path: "/api/users/{id}" },
   { label: "Listar órdenes por ID usuario", method: "GET", path: "/api/orders/user/{id}" },
   { label: "Obtener orden por ID", method: "GET", path: "/api/orders/{id}" }
+  { label: "Listar órdenes por ID usuario", method: "GET", path: "/api/orders/user/{id}" },
+  { label: "Obtener orden por ID", method: "GET", path: "/api/orders/{id}" }
 ];
 
 export default function AdminDashboard() {
   const [selected, setSelected] = useState(null);
   const [paramId,  setParamId ] = useState("");
   const [body,     setBody    ] = useState("{}");
+  const [files,    setFiles   ] = useState([]);
   const [files,    setFiles   ] = useState([]);
   const [response, setResponse] = useState(null);
   const [loading,  setLoading ] = useState(false);
@@ -65,12 +69,16 @@ export default function AdminDashboard() {
     const endpoint = selected.path.includes("{id}")
         ? selected.path.replace("{id}", paramId || "0")
         : selected.path;
+        ? selected.path.replace("{id}", paramId || "0")
+        : selected.path;
 
     try {
       let opts;
 
       if (selected.fileUpload) {
         const fd = new FormData();
+        files.forEach((f) => fd.append("images", f));
+        opts = { method: "POST", headers: { ...authHeader() }, body: fd };
         files.forEach((f) => fd.append("images", f));
         opts = { method: "POST", headers: { ...authHeader() }, body: fd };
       } else {
@@ -95,6 +103,14 @@ export default function AdminDashboard() {
       }
 
       setResponse(`Status: ${res.status} ${res.statusText}\n\n` + processedText);
+      let processedText = text;
+      if (endpoint === "/api/products") {
+        const data = JSON.parse(text);
+        const noImages = data.map(({ images, ...rest }) => rest);
+        processedText = JSON.stringify(noImages, null, 2);
+      }
+
+      setResponse(`Status: ${res.status} ${res.statusText}\n\n` + processedText);
     } catch (err) {
       setResponse(`ERROR: ${err.message}`);
     } finally {
@@ -107,6 +123,7 @@ export default function AdminDashboard() {
     setParamId("");
     setFiles([]);
     setResponse(null);
+    setBody(act.bodyTemplate ? JSON.stringify(act.bodyTemplate, null, 2) : "{}");
     setBody(act.bodyTemplate ? JSON.stringify(act.bodyTemplate, null, 2) : "{}");
   };
 
@@ -130,12 +147,58 @@ export default function AdminDashboard() {
                 Seleccioná una acción a la izquierda
               </Typography>
           )}
+        <Box sx={{ flexGrow: 1, p: 4, bgcolor: "#1a1a1a", color: "#fff", overflowY: "auto" }}>
+          {!selected && (
+              <Typography variant="h5" color="#888">
+                Seleccioná una acción a la izquierda
+              </Typography>
+          )}
 
           {selected && (
               <Grid container spacing={3}>
                 <Grid item xs={12} md={4}>
                   <Typography variant="h6" gutterBottom>{selected.label}</Typography>
+          {selected && (
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={4}>
+                  <Typography variant="h6" gutterBottom>{selected.label}</Typography>
 
+                  {selected.path.includes("{id}") && (
+                      <TextField
+                          label="ID"
+                          variant="filled"
+                          fullWidth
+                          margin="normal"
+                          value={paramId}
+                          onChange={(e) => setParamId(e.target.value)}
+                          InputProps={{ sx: { color: "#fff" } }}
+                          InputLabelProps={{ sx: { color: "#ccc" } }}
+                      />
+                  )}
+
+                  {selected.fileUpload && (
+                      <>
+                        <Button variant="outlined" component="label" sx={{ mt: 2, color: "#00e0ff" }}>
+                          Seleccionar imágenes
+                          <input
+                              hidden
+                              type="file"
+                              accept="image/*"
+                              multiple
+                              onChange={(e) => {
+                                const list = [...e.target.files];
+                                setFiles(list);
+                                setBody(JSON.stringify({ files: list.map((f) => f.name) }, null, 2));
+                              }}
+                          />
+                        </Button>
+                        {files.length > 0 && (
+                            <Typography variant="caption" sx={{ ml: 1 }}>
+                              {files.length} archivo(s) seleccionado(s)
+                            </Typography>
+                        )}
+                      </>
+                  )}
                   {selected.path.includes("{id}") && (
                       <TextField
                           label="ID"
@@ -187,6 +250,20 @@ export default function AdminDashboard() {
                           InputLabelProps={{ sx: { color: "#ccc" } }}
                       />
                   )}
+                  {"POSTPUT".includes(selected.method) && !selected.fileUpload && (
+                      <TextField
+                          label="Cuerpo JSON"
+                          variant="filled"
+                          fullWidth
+                          multiline
+                          minRows={8}
+                          margin="normal"
+                          value={body}
+                          onChange={(e) => setBody(e.target.value)}
+                          InputProps={{ sx: { color: "#fff", fontFamily: "monospace" } }}
+                          InputLabelProps={{ sx: { color: "#ccc" } }}
+                      />
+                  )}
 
                   <Button
                       variant="contained"
@@ -197,7 +274,50 @@ export default function AdminDashboard() {
                     {loading ? "Ejecutando…" : "EJECUTAR"}
                   </Button>
                 </Grid>
+                  <Button
+                      variant="contained"
+                      sx={{ mt: 2, bgcolor: "#00e0ff", color: "#001b36" }}
+                      disabled={loading}
+                      onClick={handleRun}
+                  >
+                    {loading ? "Ejecutando…" : "EJECUTAR"}
+                  </Button>
+                </Grid>
 
+                <Grid item xs={12} md={8}>
+                  <Box
+                      sx={{
+                        bgcolor: "#101040",
+                        p: 2,
+                        borderRadius: 1,
+                        minHeight: 300,
+                        position: "relative"
+                      }}
+                  >
+                    <IconButton
+                        size="small"
+                        onClick={() => setResponse(null)}
+                        sx={{ position: "absolute", top: 8, right: 8, color: "#ccc" }}
+                    >
+                      <RefreshIcon fontSize="inherit" />
+                    </IconButton>
+                    <Typography
+                        component="pre"
+                        sx={{
+                          whiteSpace: "pre-wrap",
+                          wordBreak: "break-all",
+                          fontFamily: "JetBrains Mono, monospace",
+                          color: "#c1e4ff"
+                        }}
+                    >
+                      {response || "— Sin respuesta aún —"}
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+          )}
+        </Box>
+      </Box>
                 <Grid item xs={12} md={8}>
                   <Box
                       sx={{

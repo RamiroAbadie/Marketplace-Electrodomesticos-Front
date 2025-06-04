@@ -33,8 +33,9 @@ export default function NavBar() {
             sx={{
               fontSize: "1.3rem",
               fontWeight: 700,
-              color: "#bde0ff",
+              color: "#ffffff",
               textTransform: "none",
+              fontFamily: "'Orbitron', sans-serif",
               mr: 3
             }}
           >
