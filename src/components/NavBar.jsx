@@ -35,6 +35,7 @@ export default function NavBar() {
               fontWeight: 700,
               color: "#bde0ff",
               textTransform: "none",
+              fontFamily: "'Orbitron', sans-serif",
               mr: 3
             }}
           >
