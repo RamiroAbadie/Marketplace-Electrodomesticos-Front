@@ -28,7 +28,7 @@ export default function NavBar() {
         <Toolbar sx={{ minHeight: 56, px: 2 }}>
           <Button
             component={RouterLink}
-            to="/admin"
+            to="/"
             disableRipple
             sx={{
               fontSize: "1.3rem",
@@ -41,6 +41,13 @@ export default function NavBar() {
             Nexus&nbsp;Admin
           </Button>
           <Box sx={{ flexGrow: 1 }} />
+          <Button
+             component={RouterLink}
+             to="/admin/add-product"
+             sx={{ color: "#fff", mr: 1 }}
+          >
+            Control&nbsp;panel
+          </Button>
           <Button onClick={logout} sx={{ color: "#fff" }}>
             Cerrar&nbsp;sesión
           </Button>
@@ -80,9 +87,20 @@ export default function NavBar() {
 
         {/* —— ADMIN fuera del panel (solo “Cerrar sesión”) —— */}
         {admin && (
-          <Button onClick={logout} sx={{ color: "#fff" }}>
-            Cerrar&nbsp;sesión
-          </Button>
+          <>
+            <Box sx={{ flexGrow: 1 }} />
+            <Button
+             component={RouterLink}
+             to="/admin/add-product"
+             sx={{ color: "#fff", mr: 1 }}
+            >
+              Control&nbsp;panel
+            </Button>
+
+            <Button onClick={logout} sx={{ color: "#fff" }}>
+              Cerrar&nbsp;sesión
+            </Button>
+          </>
         )}
 
         {/* —— Usuario logueado (no admin) —— */}

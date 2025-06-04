@@ -24,16 +24,16 @@ import { useState } from "react";
 import { authHeader } from "../utils/auth";
 
 // —— catálogo de acciones rápidas ————————————————
-//  Agregá / quitá lo que necesites.  path relativo al backend.
+//  path relativo al backend.
 const ACTIONS = [
   { label: "Listar productos",          method: "GET",    path: "/api/products" },
-  { label: "Crear producto",            method: "POST",   path: "/api/products",          bodyTemplate: { name:"", description:"", price:0, stock:0, categoryId:1 } },
-  { label: "Actualizar producto",       method: "PUT",    path: "/api/products/{id}",     bodyTemplate: { name:"", description:"", price:0, stock:0, categoryId:1 } },
+  { label: "Crear producto",            method: "POST",   path: "/api/products",          bodyTemplate: { description:"", price:0, stock:0, categoryId:0 } },
+  { label: "Actualizar producto",       method: "PUT",    path: "/api/products/{id}",     bodyTemplate: { description:"", price:0, stock:0, categoryId:0 } },
   { label: "Eliminar producto",         method: "DELETE", path: "/api/products/{id}" },
 
   { label: "Listar categorías",         method: "GET",    path: "/api/categories" },
-  { label: "Crear categoría",           method: "POST",   path: "/api/categories",        bodyTemplate: { name:"", description:"" } },
-  { label: "Actualizar categoría",      method: "PUT",    path: "/api/categories/{id}",   bodyTemplate: { name:"", description:"" } },
+  { label: "Crear categoría",           method: "POST",   path: "/api/categories",        bodyTemplate: { description:"" } },
+  { label: "Actualizar categoría",      method: "PUT",    path: "/api/categories/{id}",   bodyTemplate: { description:"" } },
   { label: "Eliminar categoría",        method: "DELETE", path: "/api/categories/{id}" },
 
   { label: "Listar usuarios",           method: "GET",    path: "/api/users" },
