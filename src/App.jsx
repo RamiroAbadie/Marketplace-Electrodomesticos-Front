@@ -5,11 +5,11 @@ import Products from "./views/Products";
 import Login from "./views/Login";
 import Register from "./views/Register";
 import Checkout from "./views/Checkout";
-//import Cart from "./views/Cart";
 import AdminDashboard from "./views/AdminDashboard";
 import PrivateRoute   from "./components/PrivateRoute";
 import Profile from "./views/Profile";
 import Confirmation from "./views/Confirmation";
+import Cart from "./views/Cart";
 
 function App() {
   return (
@@ -23,6 +23,7 @@ function App() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/confirmation" element={<Confirmation />} />
+        <Route path="/cart" element={<Cart />} />
         {/**Profile
         <Route path="/cart" element={<Cart />} />
 

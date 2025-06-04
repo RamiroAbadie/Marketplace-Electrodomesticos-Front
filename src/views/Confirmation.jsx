@@ -1,9 +1,29 @@
-import { Box, Container, Typography, Paper } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Box, Typography, Paper } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function Confirmation() {
-    // Obtener usuario y orden desde localStorage
-    const user = JSON.parse(localStorage.getItem("user"));
-    const order = JSON.parse(localStorage.getItem("lastOrder"));
+    const navigate = useNavigate();
+    const [order, setOrder] = useState(null);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const storedOrder = localStorage.getItem("lastOrder");
+        const storedUser = localStorage.getItem("user");
+
+        if (!storedOrder || !storedUser) {
+            // si no hay orden o usuario, redirigimos
+            navigate("/");
+            return;
+        }
+
+        setOrder(JSON.parse(storedOrder));
+        setUser(JSON.parse(storedUser));
+    }, [navigate]);
+
+    if (!order || !user) return null;
+
+    const product = order.items?.[0];
 
     return (
         <Box
@@ -14,42 +34,28 @@ export default function Confirmation() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                position: "relative",
-                overflow: "hidden",
-                py: 8,
             }}
         >
-            <Container maxWidth="sm" sx={{ zIndex: 1 }}>
-                <Paper
-                    sx={{
-                        p: 4,
-                        borderRadius: 3,
-                        backgroundColor: "rgba(255,255,255,0.04)",
-                        backdropFilter: "blur(8px)",
-                        color: "#fff",
-                        textAlign: "center",
-                    }}
-                >
-                    <Typography
-                        variant="h4"
-                        sx={{ fontFamily: "'Orbitron', sans-serif", mb: 2 }}
-                    >
-                        Orden Confirmada
-                    </Typography>
-
-                    <Typography variant="h6" sx={{ mb: 1 }}>
-                        Orden ID: <strong>{order?.orderId || "—"}</strong>
-                    </Typography>
-
-                    <Typography variant="body1" sx={{ mb: 2 }}>
-                        Producto: <strong>{order?.items?.[0]?.description || "—"}</strong>
-                    </Typography>
-
-                    <Typography variant="h6" sx={{ mt: 4 }}>
-                        ¡Gracias {user?.firstname || "Usuario"} por viajar al futuro con nosotros! 🚀
-                    </Typography>
-                </Paper>
-            </Container>
+            <Paper
+                sx={{
+                    px: 6,
+                    py: 5,
+                    backgroundColor: "rgba(255,255,255,0.05)",
+                    color: "#fff",
+                    borderRadius: 3,
+                    textAlign: "center",
+                    backdropFilter: "blur(5px)",
+                }}
+            >
+                <Typography variant="h4" sx={{ fontFamily: "'Orbitron', sans-serif", mb: 2 }}>
+                    Orden Confirmada
+                </Typography>
+                <Typography variant="h6">Orden ID: {order.orderId}</Typography>
+                <Typography variant="h6">Producto: {product?.description}</Typography>
+                <Typography variant="body1" sx={{ mt: 3 }}>
+                    ¡Gracias {user.firstname} por viajar al futuro con nosotros! 🚀
+                </Typography>
+            </Paper>
         </Box>
     );
 }

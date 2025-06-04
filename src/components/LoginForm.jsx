@@ -33,7 +33,7 @@ export default function LoginForm() {
 
             console.log("Login exitoso:", data.user);
 
-            window.location.href = isAdmin() ? "/admin" : "/";;
+            window.location.href = isAdmin() ? "/admin" : "/";
         } catch (err) {
             console.error("Error en login:", err.message);
             alert("Credenciales incorrectas.");

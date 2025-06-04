@@ -1,8 +1,26 @@
-// src/views/Checkout.jsx
+import { useEffect } from "react";
 import { Box, Container, Typography } from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
 import CheckoutForm from "../components/CheckoutForm";
 
 export default function Checkout() {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const product = location.state?.product;
+    const token = localStorage.getItem("token");
+
+    useEffect(() => {
+        if (!token) {
+            navigate("/");
+            return;
+        }
+
+        if (!product) {
+            alert("No se ha seleccionado ningún producto.");
+            navigate("/products");
+        }
+    }, [navigate, token, product]);
+
     return (
         <Box
             sx={{
