@@ -24,10 +24,6 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/confirmation" element={<Confirmation />} />
         <Route path="/cart" element={<Cart />} />
-        {/**Profile
-        <Route path="/cart" element={<Cart />} />
-
-        */}
 
 
         {/** RUTAS ADMIN */}
