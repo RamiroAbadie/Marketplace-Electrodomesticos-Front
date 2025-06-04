@@ -84,6 +84,7 @@ export default function ProductDetails() {
 
                     {!admin && (
                         <Button
+                            disabled={product.stock <= 0}
                             variant="contained"
                             onClick={handleBuyNow}
                             sx={{
