@@ -10,6 +10,7 @@ import PrivateRoute   from "./components/PrivateRoute";
 import Profile from "./views/Profile";
 import Confirmation from "./views/Confirmation";
 import Cart from "./views/Cart";
+import ProductDetails from "./views/ProductDetails";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/confirmation" element={<Confirmation />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
         {/**Profile
         <Route path="/cart" element={<Cart />} />
 

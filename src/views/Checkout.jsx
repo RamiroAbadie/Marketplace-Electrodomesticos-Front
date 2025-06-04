@@ -32,7 +32,7 @@ export default function Checkout() {
                 justifyContent: "center",
                 position: "relative",
                 overflow: "hidden",
-                py: 8,
+                py: 0,
             }}
         >
             <Box

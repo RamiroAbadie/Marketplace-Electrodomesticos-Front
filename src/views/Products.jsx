@@ -69,7 +69,7 @@ export default function Products() {
 
   /* ---------- UI ---------- */
   return (
-    <Box display="flex">
+    <Box sx={{ display: "flex", minHeight: "100vh", background: "#121242" }}>
       <FilterSidebar onApply={setFilters} />
 
       <Container maxWidth="xl" sx={{ py: 4 }} >
