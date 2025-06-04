@@ -1,12 +1,13 @@
 import { Box, Typography, Container, Button } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { isAdmin } from "../utils/auth.js";
+import { isAdmin, getToken } from "../utils/auth.js";
 
 export default function ProductDetails() {
     const { state } = useLocation();
     const navigate = useNavigate();
     const product = state?.product;
     const admin    = isAdmin();
+    const logged   = Boolean(getToken());   // ← ¿hay sesión?
 
     if (!product) {
         return (
@@ -19,6 +20,10 @@ export default function ProductDetails() {
     }
 
     const handleBuyNow = () => {
+        if (!logged) {
+            navigate("/login");
+            return;
+        }
         navigate("/checkout", { state: { product } });
     };
 

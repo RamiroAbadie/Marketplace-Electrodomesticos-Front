@@ -22,10 +22,6 @@ export default function ProductCard({ product }) {
 
   /* ─── Click en la tarjeta ─── */
   const handleCardClick = () => {
-    if (!logged) {
-      navigate("/login");
-      return;
-    }
     navigate(`/product/${product.id}`, { state: { product } });
   };
 
