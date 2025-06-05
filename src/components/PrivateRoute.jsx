@@ -13,7 +13,7 @@ import { getToken, isAdmin } from "../utils/auth";
  */
 export default function PrivateRoute({ adminOnly = false }) {
   const token = getToken();       // null si no hay sesión
-  const admin = isAdmin();        // true / false
+  const admin = isAdmin();
 
   if (!token) return <Navigate to="/login" replace />;
   if (adminOnly && !admin) return <Navigate to="/" replace />;

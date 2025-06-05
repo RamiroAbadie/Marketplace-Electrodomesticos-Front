@@ -32,11 +32,11 @@ export default function Products() {
     try {
       let url = "/api/products";
 
-      // 1) texto de búsqueda tiene prioridad
+      // 1) texto de búsqueda (tiene prioridad)
       if (search) {
         url = `/api/products/search?query=${encodeURIComponent(search)}`;
       } else {
-        /* 2) filtros combinables */
+        // 2) filtros
         if (filters.categoryId) {
           url = `/api/products/category/${filters.categoryId}`;
         } else if (filters.onlyAvailable) {
@@ -61,13 +61,12 @@ export default function Products() {
   /* inicial + cambios */
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
 
-  /* debounce de búsqueda */
+  /* búsqueda */
   useEffect(() => {
     const t = setTimeout(fetchProducts, 400);
     return () => clearTimeout(t);
   }, [search, fetchProducts]);
 
-  /* ---------- UI ---------- */
   return (
     <Box sx={{ display: "flex", minHeight: "100vh", background: "#121242" }}>
       <FilterSidebar onApply={setFilters} />

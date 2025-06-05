@@ -15,7 +15,7 @@ import ProductDetails from "./views/ProductDetails";
 function App() {
   return (
     <BrowserRouter>
-      <NavBar />        {/* único AppBar, fuera de todo */}
+      <NavBar /> {/* Fuera de todo! */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
@@ -26,10 +26,6 @@ function App() {
         <Route path="/confirmation" element={<Confirmation />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/product/:id" element={<ProductDetails />} />
-        {/**Profile
-        <Route path="/cart" element={<Cart />} />
-
-        */}
 
 
         {/** RUTAS ADMIN */}

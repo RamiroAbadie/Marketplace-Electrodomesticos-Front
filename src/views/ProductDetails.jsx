@@ -48,7 +48,7 @@ export default function ProductDetails() {
                     width: "100%",
                     gap: 5,
                     borderRadius: 4,
-                    background: "rgb(47,29,101)", // azul claro translúcido
+                    background: "rgb(47,29,101)",
                     backdropFilter: "blur(10px)",
                     boxShadow: 6,
                     p: 4,

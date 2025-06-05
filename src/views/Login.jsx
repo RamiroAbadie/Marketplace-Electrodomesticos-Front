@@ -14,7 +14,6 @@ export default function Login() {
                 overflow: "hidden",
             }}
         >
-            {/* scan-lines overlay opcional */}
             <Box
                 sx={{
                     position: "absolute",

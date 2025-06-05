@@ -1,4 +1,3 @@
-/* src/views/Home.jsx */
 import { Box, Button, Container, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
@@ -17,7 +16,6 @@ export default function Home() {
           overflow: "hidden",
         }}
       >
-        {/* scan-lines overlay */}
         <Box
           sx={{
             position: "absolute",
@@ -74,7 +72,7 @@ export default function Home() {
           </Button>
         </Container>
 
-                {/* LOGO decorativo */}
+        {/* LOGO decorativo */}
         <Box
           component="img"
           src="/NexusElectronics Logo (tinify).png"
@@ -90,8 +88,6 @@ export default function Home() {
           }}
         />
       </Box>
-
-      {/* ...Ventajas, Banner, Preview products, Footer (secciones similares) */}
     </>
   );
 }
