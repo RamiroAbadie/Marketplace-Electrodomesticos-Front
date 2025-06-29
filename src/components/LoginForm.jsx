@@ -7,39 +7,35 @@ import {
     Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../redux/slices/userSlice";
 import { isAdmin } from "../utils/auth";
 
 export default function LoginForm() {
+    const dispatch = useDispatch();
+
+    // Estado local para campos del formulario
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    // Estado global de Redux (slice de usuario)
+    const { loading, error } = useSelector((state) => state.user);
+
+    // Al enviar el formulario
     const handleLogin = async (e) => {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://localhost:8080/api/v1/auth/authenticate", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
-            });
-
-            if (!res.ok) throw new Error("Login fallido");
-
-            const data = await res.json();
-
-            // Guardar token y usuario
-            localStorage.setItem("token", data.access_token);
-            localStorage.setItem("user", JSON.stringify(data.user));
-
-            console.log("Login exitoso:", data.user);
-
+            // Disparar acción asincrónica
+            const result = await dispatch(loginUser({ email, password })).unwrap();
+            console.log("Login exitoso:", result.user);
+            // Redireccionar según el rol
             window.location.href = isAdmin() ? "/admin" : "/";
         } catch (err) {
-            console.error("Error en login:", err.message);
-            alert("Credenciales incorrectas.");
+            console.error("Login fallido:", err);
+            alert(err);
         }
     };
-
 
     return (
         <Box
@@ -63,6 +59,7 @@ export default function LoginForm() {
                     InputProps={{ sx: { color: "white" } }}
                     InputLabelProps={{ sx: { color: "white" } }}
                 />
+
                 <TextField
                     label="Contraseña"
                     type="password"
@@ -74,13 +71,24 @@ export default function LoginForm() {
                     InputLabelProps={{ sx: { color: "white" } }}
                 />
 
+                {error && (
+                    <Typography color="error" textAlign="center">
+                        {error}
+                    </Typography>
+                )}
+
                 <Button
                     type="submit"
                     variant="contained"
                     fullWidth
-                    sx={{ backgroundColor: "#00e0ff", color: "#001b36", fontWeight: "bold" }}
+                    disabled={loading}
+                    sx={{
+                        backgroundColor: "#00e0ff",
+                        color: "#001b36",
+                        fontWeight: "bold",
+                    }}
                 >
-                    Iniciar sesión
+                    {loading ? "Ingresando..." : "Iniciar sesión"}
                 </Button>
 
                 <Typography variant="body2" color="white">

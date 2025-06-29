@@ -1,13 +1,14 @@
 import { Box, Typography, Container, Button } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { isAdmin, getToken } from "../utils/auth.js";
+import { useSelector } from "react-redux";
 
 export default function ProductDetails() {
     const { state } = useLocation();
     const navigate = useNavigate();
     const product = state?.product;
-    const admin    = isAdmin();
-    const logged   = Boolean(getToken());   // ← ¿hay sesión?
+    const { token, user } = useSelector((state) => state.user);
+    const logged = Boolean(token);
+    const admin = user?.role === "ADMIN"; // o "ROLE_ADMIN"
 
     if (!product) {
         return (

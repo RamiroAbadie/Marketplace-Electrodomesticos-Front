@@ -7,8 +7,14 @@ import {
     Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../redux/slices/userSlice";
 
 export default function RegisterForm() {
+    const dispatch = useDispatch();
+    const { loading, error } = useSelector((state) => state.user);
+
+    // Estado local para inputs
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
@@ -24,29 +30,17 @@ export default function RegisterForm() {
         }
 
         try {
-            const res = await fetch("http://localhost:8080/api/v1/auth/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ firstname, lastname, email, password }),
-            });
+            const result = await dispatch(
+                registerUser({ firstname, lastname, email, password })
+            ).unwrap();
 
-            if (!res.ok) throw new Error("Registro fallido");
-
-            const data = await res.json();
-
-            // Guardar token y usuario
-            localStorage.setItem("token", data.access_token);
-            localStorage.setItem("user", JSON.stringify(data.user));
-
-            console.log("Registro exitoso:", data.user);
-
+            console.log("Registro exitoso:", result.user);
             window.location.href = "/";
         } catch (err) {
-            console.error("Error en registro:", err.message);
-            alert("Hubo un problema al registrar la cuenta.");
+            console.error("Error en registro:", err);
+            alert(err);
         }
     };
-
 
     return (
         <Box
@@ -109,13 +103,20 @@ export default function RegisterForm() {
                     InputLabelProps={{ sx: { color: "white" } }}
                 />
 
+                {error && (
+                    <Typography color="error" textAlign="center">
+                        {error}
+                    </Typography>
+                )}
+
                 <Button
                     type="submit"
                     variant="contained"
                     fullWidth
+                    disabled={loading}
                     sx={{ backgroundColor: "#00e0ff", color: "#001b36", fontWeight: "bold" }}
                 >
-                    Crear cuenta
+                    {loading ? "Creando cuenta..." : "Crear cuenta"}
                 </Button>
 
                 <Typography variant="body2" color="white">

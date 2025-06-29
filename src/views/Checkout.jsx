@@ -2,12 +2,13 @@ import { useEffect } from "react";
 import { Box, Container, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import CheckoutForm from "../components/CheckoutForm";
+import { useSelector } from "react-redux";
 
 export default function Checkout() {
     const navigate = useNavigate();
     const location = useLocation();
     const product = location.state?.product;
-    const token = localStorage.getItem("token");
+    const { token } = useSelector((state) => state.user);
 
     useEffect(() => {
         if (!token) {

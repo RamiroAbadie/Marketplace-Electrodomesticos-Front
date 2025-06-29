@@ -12,11 +12,13 @@ import {
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function CheckoutForm() {
     const navigate = useNavigate();
     const location = useLocation();
     const product = location.state?.product;
+    const { token } = useSelector((state) => state.user);
 
     // Estados para los campos del cliente
     const [fullName, setFullName] = useState("");
@@ -83,7 +85,7 @@ export default function CheckoutForm() {
             return;
         }
 
-        const token = localStorage.getItem("token");
+
         if (!token) {
             alert("Debés iniciar sesión para realizar la compra.");
             navigate("/login");

@@ -1,20 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Box, Typography, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Profile() {
-    const [user, setUser] = useState(null);
+    const { user } = useSelector((state) => state.user);
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Traemos el usuario guardado en localStorage
-        const userData = localStorage.getItem("user");
-        if (!userData) {
+        if (!user) {
             navigate("/login");
-            return;
         }
-        setUser(JSON.parse(userData));
-    }, [navigate]);
+    }, [navigate, user]);
 
     return (
         <Box
@@ -49,7 +46,6 @@ export default function Profile() {
 
                         <Typography variant="h6">Email:</Typography>
                         <Typography mb={2}>{user.email}</Typography>
-
                     </>
                 ) : (
                     <Typography>Cargando usuario...</Typography>

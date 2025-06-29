@@ -8,7 +8,7 @@ import {
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useNavigate } from "react-router-dom";
-import { isAdmin, getToken } from "../utils/auth.js";
+import { useSelector } from "react-redux";
 
 const CARD_WIDTH  = 260;
 const CARD_HEIGHT = 400;
@@ -17,8 +17,9 @@ const IMG_HEIGHT  = 180;
 export default function ProductCard({ product }) {
   const navigate = useNavigate();
   const multiple = product.images?.length > 1;
-  const admin    = isAdmin();
-  const logged   = Boolean(getToken());   // ¿hay sesión?
+    const { token, user } = useSelector((state) => state.user);
+    const logged = Boolean(token);
+    const admin = user?.role === "ADMIN"; // o "ROLE_ADMIN"
 
   /* ─── Click en la tarjeta ─── */
   const handleCardClick = () => {
