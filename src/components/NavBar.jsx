@@ -21,7 +21,7 @@ export default function NavBar() {
     navigate("/login");
   };
 
-  /* —— barra especial cuando navegas dentro del panel de admin —— */
+  /* —— barra dentro del panel de admin —— */
   if (admin && location.pathname.startsWith("/admin")) {
     return (
       <AppBar position="fixed" sx={{ bgcolor: "#0d73d1" }}>
@@ -87,7 +87,7 @@ export default function NavBar() {
           Productos
         </Button>
 
-        {/* —— ADMIN fuera del panel (solo “Cerrar sesión”) —— */}
+        {/* —— ADMIN fuera del panel —— */}
         {admin && (
           <>
             <Box sx={{ flexGrow: 1 }} />

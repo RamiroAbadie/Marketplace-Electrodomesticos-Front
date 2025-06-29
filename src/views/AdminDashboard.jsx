@@ -1,6 +1,3 @@
-// -------------------------------------------------------------
-// AdminDashboard.jsx  (v5 — sin error map, textarea OK, images:[])
-// -------------------------------------------------------------
 import {
   Box,
   Button,
@@ -19,15 +16,13 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import { useState } from "react";
 import { authHeader } from "../utils/auth";
 
-/* ──────────────────────────────────────────────────────────────
-   Acciones rápidas
-──────────────────────────────────────────────────────────────── */
+/* ─────────────────Acciones──────────────────────────────────────────────────────── */
 const ACTIONS = [
   { label: "Listar productos", method: "GET", path: "/api/products" },
 
   { label: "Crear producto",   method: "POST", path: "/api/products",
     bodyTemplate: {
-      description:"", price:0, stock:0, categoryId:0, images: []      // ← añadido
+      description:"", price:0, stock:0, categoryId:0, images: []
     }
   },
 

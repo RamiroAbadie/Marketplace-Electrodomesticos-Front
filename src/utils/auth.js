@@ -3,9 +3,9 @@
 // • Manejo del JWT (localStorage)
 // • Función isAdmin() acepta "ROLE_ADMIN" o simplemente "ADMIN"
 // ------------------------------------------------------------------
-import { jwtDecode } from "jwt-decode";   // v4: import { jwtDecode } from …
+import { jwtDecode } from "jwt-decode";
 
-let cache = null;                        // evita decodificar muchas veces
+let cache = null; // evita decodificar muchas veces
 
 /* ───── token crudo ─────────────────────────────────────────────── */
 export function getToken() {
@@ -20,7 +20,7 @@ export function getTokenData() {
   if (!t) return null;
 
   try {
-    cache = jwtDecode(t);                // decodifica Base64-URL
+    cache = jwtDecode(t); // decodifica Base64-URL
     return cache;
   } catch {
     return null;
@@ -54,7 +54,7 @@ export function authHeader() {
   return t ? { Authorization: `Bearer ${t}` } : {};
 }
 
-/* ───── helper visible sólo en modo dev (para consola) ──────────── */
+/* ───── helper visible sólo en modo dev (para consola) (PARA PROBAR COSAS) ──────────── */
 if (import.meta.env.DEV) {
   window.getTokenData = getTokenData;
 }

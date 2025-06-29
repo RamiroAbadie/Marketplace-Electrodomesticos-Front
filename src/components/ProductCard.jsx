@@ -18,7 +18,7 @@ export default function ProductCard({ product }) {
   const navigate = useNavigate();
   const multiple = product.images?.length > 1;
   const admin    = isAdmin();
-  const logged   = Boolean(getToken());   // ← ¿hay sesión?
+  const logged   = Boolean(getToken());   // ¿hay sesión?
 
   /* ─── Click en la tarjeta ─── */
   const handleCardClick = () => {

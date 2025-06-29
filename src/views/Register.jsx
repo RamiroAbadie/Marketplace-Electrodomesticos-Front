@@ -1,4 +1,3 @@
-// src/views/Register.jsx
 import { Box, Container, Typography } from "@mui/material";
 import RegisterForm from "../components/RegisterForm";
 
@@ -15,7 +14,6 @@ export default function Register() {
                 overflow: "hidden",
             }}
         >
-            {/* scan-lines opcional (como Home) */}
             <Box
                 sx={{
                     position: "absolute",

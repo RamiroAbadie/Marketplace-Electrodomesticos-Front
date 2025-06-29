@@ -1,4 +1,3 @@
-// src/components/FilterSideBar.jsx
 import { useEffect, useState, useCallback } from "react";
 import {
   Box,
@@ -20,7 +19,7 @@ import getCategoryLabel from "../utils/getCategoryLabels";
 
 /* =============  CONSTANTES  ============= */
 const DRAWER_WIDTH = 300;       // ancho fijo para el panel
-const PRICE_MAX      = 100_000; // valor máx. del slider (cambiar si lo necesitas)
+const PRICE_MAX      = 100_000; // valor máx. del slider
 
 /* =============  COMPONENTE  ============= */
 export default function FilterSidebar({ onApply }) {
@@ -35,7 +34,7 @@ export default function FilterSidebar({ onApply }) {
     max: "",
   });
 
-  /* ---- cargar categorías en primer render ---- */
+  /* ---- cargar categorías ---- */
   useEffect(() => {
     fetch("http://localhost:8080/api/categories")
       .then((r) => r.json())
@@ -64,7 +63,7 @@ export default function FilterSidebar({ onApply }) {
     setOpen(false);
   }, [filters, onApply]);
 
-  /* -------------- BOTÓN flotante -------------- */
+  /* -------------- BOTÓN -------------- */
   const FabFilters = (
     <Tooltip title="Filtros" arrow TransitionComponent={Fade}>
       <IconButton
@@ -103,7 +102,7 @@ export default function FilterSidebar({ onApply }) {
     </>
   );
 
-  /* ----------- CONTENIDO interno ----------- */
+  /* ----------- CONTENIDO ----------- */
   function SidebarContent() {
     return (
       <Box>
