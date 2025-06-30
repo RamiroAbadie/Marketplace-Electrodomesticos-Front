@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from "../../axiosInstance";
+import axiosInstance from "../../axiosInstance.js";
 
 // Acción asincrónica para registrar usuario
 export const registerUser = createAsyncThunk(
     "user/register",
     async (userData, thunkAPI) => {
         try {
-            const res = await axiosInstance.post("/auth/register", userData);
+            const res = await axiosInstance.post("v1/auth/register", userData);
             const data = res.data;
             // persistencia en LocalStorage
             localStorage.setItem("token", data.access_token);
@@ -25,7 +25,7 @@ export const loginUser = createAsyncThunk(
     "user/login",
     async (credentials, thunkAPI) => {
         try {
-            const res = await axiosInstance.post("/auth/authenticate", credentials);
+            const res = await axiosInstance.post("v1/auth/authenticate", credentials);
             const data = res.data;
             localStorage.setItem("token", data.access_token);
             localStorage.setItem("user", JSON.stringify(data.user));

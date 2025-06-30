@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../redux/slices/userSlice";
+import { registerUser } from "../redux/slices/userSlice.js";
 
 export default function RegisterForm() {
     const dispatch = useDispatch();

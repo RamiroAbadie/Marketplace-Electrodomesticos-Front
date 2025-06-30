@@ -7,7 +7,7 @@ import {
 import { ShoppingCart } from "@mui/icons-material";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../redux/slices/userSlice";
+import { logout } from "../redux/slices/userSlice.js";
 
 export default function NavBar() {
     const location = useLocation();

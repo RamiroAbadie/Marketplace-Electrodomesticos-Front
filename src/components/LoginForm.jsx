@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../redux/slices/userSlice";
+import { loginUser } from "../redux/slices/userSlice.js";
 import { isAdmin } from "../utils/auth";
 
 export default function LoginForm() {
