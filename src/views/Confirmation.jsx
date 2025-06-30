@@ -1,29 +1,25 @@
-import { useEffect, useState } from "react";
-import { Box, Typography, Paper } from "@mui/material";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Box, Typography, Paper, Divider } from "@mui/material";
+import {useDispatch, useSelector} from "react-redux";
+import {clearCart} from "../redux/slices/cartSlice.js";
 
 export default function Confirmation() {
     const navigate = useNavigate();
-    const [order, setOrder] = useState(null);
-    const [user, setUser] = useState(null);
+
+    const order = useSelector((state) => state.orders.selectedOrder);
+    const user = useSelector((state) => state.user.user);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        const storedOrder = localStorage.getItem("lastOrder");
-        const storedUser = localStorage.getItem("user");
-
-        if (!storedOrder || !storedUser) {
-            // si no hay orden o usuario, redirigimos
+        if (!order || !user) {
             navigate("/");
-            return;
+        } else {
+            dispatch(clearCart());
         }
-
-        setOrder(JSON.parse(storedOrder));
-        setUser(JSON.parse(storedUser));
-    }, [navigate]);
+    }, [order, user, navigate, dispatch]);
 
     if (!order || !user) return null;
-
-    const product = order.items?.[0];
 
     return (
         <Box
@@ -45,13 +41,31 @@ export default function Confirmation() {
                     borderRadius: 3,
                     textAlign: "center",
                     backdropFilter: "blur(5px)",
+                    maxWidth: 600,
                 }}
             >
                 <Typography variant="h4" sx={{ fontFamily: "'Orbitron', sans-serif", mb: 2 }}>
                     Orden Confirmada
                 </Typography>
-                <Typography variant="h6">Orden ID: {order.orderId}</Typography>
-                <Typography variant="h6">Producto: {product?.description}</Typography>
+
+                <Typography variant="h6" gutterBottom>
+                    Orden ID: {order.orderId}
+                </Typography>
+
+                {order.items && order.items.length > 0 ? (
+                    <>
+                        {order.items.map((item, i) => (
+                            <Box key={i} sx={{ mb: 2 }}>
+                                <Typography>Producto: <strong>{item.description}</strong></Typography>
+                                <Typography>Cantidad: {item.quantity}</Typography>
+                                <Divider sx={{ my: 1, borderColor: "#ccc" }} />
+                            </Box>
+                        ))}
+                    </>
+                ) : (
+                    <Typography>No hay productos en esta orden.</Typography>
+                )}
+
                 <Typography variant="body1" sx={{ mt: 3 }}>
                     ¡Gracias {user.firstname} por viajar al futuro con nosotros! 🚀
                 </Typography>

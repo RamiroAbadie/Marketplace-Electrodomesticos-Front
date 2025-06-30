@@ -5,8 +5,15 @@ import axiosInstance from "../../axiosInstance";
 export const createOrder = createAsyncThunk(
     "orders/create",
     async (orderData, thunkAPI) => {
+        const state = thunkAPI.getState();
+        const token = state.user.token;
+
         try {
-            const res = await axiosInstance.post("/orders", orderData);
+            const res = await axiosInstance.post("/orders", orderData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             return res.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(
@@ -15,6 +22,7 @@ export const createOrder = createAsyncThunk(
         }
     }
 );
+
 
 // Obtener orden por ID
 export const getOrderById = createAsyncThunk(

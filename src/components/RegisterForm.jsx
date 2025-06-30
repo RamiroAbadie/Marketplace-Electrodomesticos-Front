@@ -9,10 +9,12 @@ import {
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../redux/slices/userSlice.js";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterForm() {
     const dispatch = useDispatch();
     const { loading, error } = useSelector((state) => state.user);
+    const navigate = useNavigate();
 
     // Estado local para inputs
     const [firstname, setFirstname] = useState("");
@@ -35,7 +37,7 @@ export default function RegisterForm() {
             ).unwrap();
 
             console.log("Registro exitoso:", result.user);
-            window.location.href = "/";
+            navigate("/");
         } catch (err) {
             console.error("Error en registro:", err);
             alert(err);

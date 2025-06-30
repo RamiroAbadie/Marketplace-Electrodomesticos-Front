@@ -9,10 +9,11 @@ import {
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../redux/slices/userSlice.js";
-import { isAdmin } from "../utils/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // Estado local para campos del formulario
     const [email, setEmail] = useState("");
@@ -30,10 +31,10 @@ export default function LoginForm() {
             const result = await dispatch(loginUser({ email, password })).unwrap();
             console.log("Login exitoso:", result.user);
             // Redireccionar según el rol
-            window.location.href = isAdmin() ? "/admin" : "/";
+            navigate(result.user.role === "ADMIN" ? "/admin" : "/");
         } catch (err) {
             console.error("Login fallido:", err);
-            alert(err);
+            alert("Login fallido: verifique los datos ingresados");
         }
     };
 

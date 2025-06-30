@@ -11,16 +11,21 @@ import {
     Box,
 } from "@mui/material";
 
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import { Divider } from "@mui/material";
+import {clearOrderState, createOrder} from "../redux/slices/orderSlice.js";
+
 
 export default function CheckoutForm() {
     const navigate = useNavigate();
     const cartItems = useSelector((state) => state.cart.items);
     const { token } = useSelector((state) => state.user);
     const total = useSelector((state) => state.cart.total);
+    const dispatch = useDispatch();
+    const selectedOrder = useSelector((state) => state.orders.selectedOrder);
+    const success = useSelector((state) => state.orders.success);
 
     // Estados para los campos del cliente
     const [fullName, setFullName] = useState("");
@@ -28,7 +33,7 @@ export default function CheckoutForm() {
     const [zip, setZip] = useState("");
     const [city, setCity] = useState("");
 
-    // Estado del método de pago
+    // Estado del metodo de pago
     const [paymentMethod, setPaymentMethod] = useState("tarjeta");
     const [cardNumber, setCardNumber] = useState("");
     const [expiry, setExpiry] = useState("");
@@ -94,33 +99,32 @@ export default function CheckoutForm() {
             return;
         }
 
+        const orderData = {
+            items: cartItems.map((item) => ({
+                productId: item.id,
+                quantity: item.quantity,
+            })),
+        };
+
         try {
-            const res = await fetch("http://localhost:8080/api/orders", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    items: cartItems.map((item) => ({
-                        productId: item.id,
-                        quantity: item.quantity,
-                    })),
-                }),
-            });
-
-            if (!res.ok) throw new Error("Error al crear la orden");
-
-            const data = await res.json();
-            localStorage.setItem("lastOrder", JSON.stringify(data));
-
-            alert("Orden confirmada 🚀");
-            window.location.href = "/confirmation";
+            console.log("Token:", token);
+            await dispatch(createOrder(orderData)).unwrap();
         } catch (err) {
             console.error(err);
             alert("Hubo un problema al crear la orden");
         }
     };
+
+    useEffect(() => {
+        dispatch(clearOrderState());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (success && selectedOrder) {
+            alert("Orden confirmada 🚀");
+            navigate("/confirmation");
+        }
+    }, [success, selectedOrder, navigate]);
 
 
     return (

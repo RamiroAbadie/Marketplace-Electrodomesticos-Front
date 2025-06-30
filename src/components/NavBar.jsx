@@ -46,6 +46,15 @@ export default function NavBar() {
                         Nexus&nbsp;Admin
                     </Button>
                     <Box sx={{ flexGrow: 1 }} />
+
+                    <Button
+                        component={RouterLink}
+                        to="/products"
+                        sx={{ color: "#fff", mr: 1}}
+                    >
+                        Productos
+                    </Button>
+
                     <Button
                         component={RouterLink}
                         to="/admin/add-product"
@@ -83,17 +92,18 @@ export default function NavBar() {
 
                 <Box sx={{ flexGrow: 1 }} />
 
-                <Button
-                    component={RouterLink}
-                    to="/products"
-                    sx={{ color: "#fff", mr: 1 }}
-                >
-                    Productos
-                </Button>
+
 
                 {/* —— ADMIN fuera del panel —— */}
                 {admin && (
                     <>
+                        <Button
+                            component={RouterLink}
+                            to="/products"
+                            sx={{ color: "#fff", mr: -100 }}
+                        >
+                            Productos
+                        </Button>
                         <Box sx={{ flexGrow: 1 }} />
                         <Button
                             component={RouterLink}
@@ -111,6 +121,15 @@ export default function NavBar() {
                 {/* —— Usuario logueado (no admin) —— */}
                 {logged && !admin && (
                     <>
+
+
+                        <Button
+                            component={RouterLink}
+                            to="/products"
+                            sx={{ color: "#fff", mr: 1 }}
+                        >
+                            Productos
+                        </Button>
                         <Button
                             component={RouterLink}
                             to="/cart"
@@ -135,6 +154,15 @@ export default function NavBar() {
                 {/* —— Invitado (no logueado) —— */}
                 {!logged && (
                     <>
+
+                        <Button
+                            component={RouterLink}
+                            to="/products"
+                            sx={{ color: "#fff", mr: 1 }}
+                        >
+                            Productos
+                        </Button>
+
                         <Button
                             component={RouterLink}
                             to="/login"

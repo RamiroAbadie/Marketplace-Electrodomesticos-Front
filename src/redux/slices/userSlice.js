@@ -1,16 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../axiosInstance.js";
 
-// Acción asincrónica para registrar usuario
+
+// Registro
 export const registerUser = createAsyncThunk(
     "user/register",
     async (userData, thunkAPI) => {
         try {
             const res = await axiosInstance.post("v1/auth/register", userData);
             const data = res.data;
-            // persistencia en LocalStorage
-            localStorage.setItem("token", data.access_token);
-            localStorage.setItem("user", JSON.stringify(data.user));
             return data; // { access_token, user }
         } catch (error) {
             return thunkAPI.rejectWithValue(
@@ -20,15 +18,13 @@ export const registerUser = createAsyncThunk(
     }
 );
 
-
+// Login
 export const loginUser = createAsyncThunk(
     "user/login",
     async (credentials, thunkAPI) => {
         try {
             const res = await axiosInstance.post("v1/auth/authenticate", credentials);
             const data = res.data;
-            localStorage.setItem("token", data.access_token);
-            localStorage.setItem("user", JSON.stringify(data.user));
             return data; // { access_token, user }
         } catch (error) {
             return thunkAPI.rejectWithValue(
@@ -38,16 +34,16 @@ export const loginUser = createAsyncThunk(
     }
 );
 
-
 // Estado inicial
 const initialState = {
-    user: JSON.parse(localStorage.getItem("user")) || null,
-    token: localStorage.getItem("token") || null,
+    user: null,
+    token: null,
     loading: false,
     error: null,
 };
 
 // Slice
+
 const userSlice = createSlice({
     name: "user",
     initialState,
@@ -55,9 +51,6 @@ const userSlice = createSlice({
         logout: (state) => {
             state.user = null;
             state.token = null;
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
-            localStorage.removeItem("lastOrder");
         },
     },
     extraReducers: (builder) => {
@@ -87,9 +80,8 @@ const userSlice = createSlice({
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || "Error login";
-            })
-        ;
-    }  ,
+            });
+    },
 });
 
 export const { logout } = userSlice.actions;

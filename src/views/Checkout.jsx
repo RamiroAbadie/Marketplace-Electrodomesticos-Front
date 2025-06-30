@@ -2,12 +2,13 @@ import { useEffect } from "react";
 import { Box, Container, Typography } from "@mui/material";
 import CheckoutForm from "../components/CheckoutForm";
 import { useSelector } from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 export default function Checkout() {
     const navigate = useNavigate();
     const cartItems = useSelector((state) => state.cart.items);
     const { token } = useSelector((state) => state.user);
+    const location = useLocation();
 
     useEffect(() => {
         if (!token) {
@@ -15,7 +16,7 @@ export default function Checkout() {
             return;
         }
 
-        if (cartItems.length === 0) {
+        if (cartItems.length === 0 && !location.pathname.includes("confirmation")) {
             alert("Tu carrito está vacío.");
             navigate("/products");
         }
