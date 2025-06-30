@@ -15,7 +15,7 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import { Divider } from "@mui/material";
-import {clearOrderState, createOrder} from "../redux/slices/orderSlice.js";
+
 
 
 export default function CheckoutForm() {
@@ -115,9 +115,6 @@ export default function CheckoutForm() {
         }
     };
 
-    useEffect(() => {
-        dispatch(clearOrderState());
-    }, [dispatch]);
 
     useEffect(() => {
         if (success && selectedOrder) {

@@ -1,17 +1,22 @@
 import { useEffect } from "react";
-import { Box, Typography, Paper } from "@mui/material";
+import { Box, Typography, Paper, Divider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getOrdersByUser } from "../redux/slices/orderSlice.js";
 
 export default function Profile() {
     const { user } = useSelector((state) => state.user);
+    const orders = useSelector((state) => state.orders.orders);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (!user) {
             navigate("/login");
+        } else {
+            dispatch(getOrdersByUser(user.id));
         }
-    }, [navigate, user]);
+    }, [user, dispatch, navigate]);
 
     return (
         <Box
@@ -32,7 +37,7 @@ export default function Profile() {
                     borderRadius: 3,
                     backgroundColor: "rgba(20, 20, 60, 0.8)",
                     color: "#fff",
-                    maxWidth: 500,
+                    maxWidth: 600,
                 }}
             >
                 <Typography variant="h4" fontFamily="'Orbitron', sans-serif" gutterBottom>
@@ -46,6 +51,22 @@ export default function Profile() {
 
                         <Typography variant="h6">Email:</Typography>
                         <Typography mb={2}>{user.email}</Typography>
+
+                        <Divider sx={{ my: 2, borderColor: "#888" }} />
+
+                        <Typography variant="h6" gutterBottom>Mis Órdenes:</Typography>
+
+                        {orders && orders.length > 0 ? (
+                            orders.map((order) => (
+                                <Box key={order.orderId} sx={{ mb: 2 }}>
+                                    <Typography variant="body2">Orden ID: {order.orderId}</Typography>
+                                    <Typography variant="body2">Total: ${order.totalAmount}</Typography>
+                                    <Divider sx={{ my: 1, borderColor: "#555" }} />
+                                </Box>
+                            ))
+                        ) : (
+                            <Typography variant="body2">No tenés órdenes registradas.</Typography>
+                        )}
                     </>
                 ) : (
                     <Typography>Cargando usuario...</Typography>

@@ -8,6 +8,8 @@ import { ShoppingCart } from "@mui/icons-material";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/slices/userSlice.js";
+import {clearCart} from "../redux/slices/cartSlice.js";
+import {clearOrderState} from "../redux/slices/orderSlice.js";
 
 export default function NavBar() {
     const location = useLocation();
@@ -22,6 +24,8 @@ export default function NavBar() {
 
     const handleLogout = () => {
         dispatch(logout());
+        dispatch(clearCart());
+        dispatch(clearOrderState());
         navigate("/login");
     };
 
