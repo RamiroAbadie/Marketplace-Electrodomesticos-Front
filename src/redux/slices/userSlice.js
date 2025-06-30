@@ -57,6 +57,7 @@ const userSlice = createSlice({
             state.token = null;
             localStorage.removeItem("token");
             localStorage.removeItem("user");
+            localStorage.removeItem("lastOrder");
         },
     },
     extraReducers: (builder) => {

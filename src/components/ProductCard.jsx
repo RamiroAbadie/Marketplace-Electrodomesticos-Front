@@ -9,6 +9,11 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/slices/cartSlice";
+import { Snackbar, Alert } from "@mui/material";
+import { useState } from "react";
+
 
 const CARD_WIDTH  = 260;
 const CARD_HEIGHT = 400;
@@ -20,6 +25,8 @@ export default function ProductCard({ product }) {
     const { token, user } = useSelector((state) => state.user);
     const logged = Boolean(token);
     const admin = user?.role === "ADMIN"; // o "ROLE_ADMIN"
+    const dispatch = useDispatch();
+    const [openSnackbar, setOpenSnackbar] = useState(false);
 
   /* ─── Click en la tarjeta ─── */
   const handleCardClick = () => {
@@ -27,16 +34,28 @@ export default function ProductCard({ product }) {
   };
 
   /* ─── Click en “Agregar al carrito” ─── */
-  const handleAddToCart = (e) => {
-    e.stopPropagation();
-    if (!logged) {
-      navigate("/login");
-      return;
-    }
-    navigate("/checkout", { state: { product } });
-  };
+    const handleAddToCart = (e) => {
+        e.stopPropagation();
+
+        if (!logged) {
+            navigate("/login");
+            return;
+        }
+
+        dispatch(
+            addToCart({
+                id: product.id,
+                name: product.description,
+                price: product.price,
+                quantity: 1,
+            })
+        );
+
+        setOpenSnackbar(true); // mostrar mensaje
+    };
 
   return (
+      <>
     <Card
       sx={{
         width: CARD_WIDTH,
@@ -135,5 +154,23 @@ export default function ProductCard({ product }) {
         )}
       </CardContent>
     </Card>
+
+
+
+    <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setOpenSnackbar(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+    >
+        <Alert
+            onClose={() => setOpenSnackbar(false)}
+            severity="success"
+            sx={{ width: "100%" }}
+        >
+            Producto agregado al carrito ✅
+        </Alert>
+    </Snackbar>
+          </>
   );
 }

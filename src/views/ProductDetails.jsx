@@ -1,6 +1,9 @@
 import { Box, Typography, Container, Button } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {addToCart} from "../redux/slices/cartSlice.js";
+import {useState} from "react";
+import { Snackbar, Alert } from "@mui/material";
 
 export default function ProductDetails() {
     const { state } = useLocation();
@@ -9,6 +12,8 @@ export default function ProductDetails() {
     const { token, user } = useSelector((state) => state.user);
     const logged = Boolean(token);
     const admin = user?.role === "ADMIN"; // o "ROLE_ADMIN"
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const dispatch = useDispatch();
 
     if (!product) {
         return (
@@ -20,15 +25,29 @@ export default function ProductDetails() {
         );
     }
 
-    const handleBuyNow = () => {
+    const handleAddToCart = (e) => {
+        e.stopPropagation();
+
         if (!logged) {
             navigate("/login");
             return;
         }
-        navigate("/checkout", { state: { product } });
+
+        dispatch(
+            addToCart({
+                id: product.id,
+                name: product.description,
+                price: product.price,
+                quantity: 1,
+            })
+        );
+
+        setOpenSnackbar(true); // mostrar mensaje
     };
 
     return (
+        <>
+
         <Box
             sx={{
                 width: "100vw",
@@ -92,7 +111,7 @@ export default function ProductDetails() {
                         <Button
                             disabled={product.stock <= 0}
                             variant="contained"
-                            onClick={handleBuyNow}
+                            onClick={handleAddToCart}
                             sx={{
                                 fontWeight: "bold",
                                 background: "#00e0ff",
@@ -106,11 +125,26 @@ export default function ProductDetails() {
                                 },
                             }}
                         >
-                            Comprar ahora
+                            Agregar al Carrito
                         </Button>
                     )}
                 </Box>
             </Box>
         </Box>
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={3000}
+                onClose={() => setOpenSnackbar(false)}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            >
+                <Alert
+                    onClose={() => setOpenSnackbar(false)}
+                    severity="success"
+                    sx={{ width: "100%" }}
+                >
+                    Producto agregado al carrito ✅
+                </Alert>
+            </Snackbar>
+            </>
     );
 }

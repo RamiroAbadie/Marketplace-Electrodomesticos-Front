@@ -10,15 +10,17 @@ import {
     MenuItem,
     Box,
 } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import {useNavigate} from "react-router-dom";
+import { Divider } from "@mui/material";
 
 export default function CheckoutForm() {
     const navigate = useNavigate();
-    const location = useLocation();
-    const product = location.state?.product;
+    const cartItems = useSelector((state) => state.cart.items);
     const { token } = useSelector((state) => state.user);
+    const total = useSelector((state) => state.cart.total);
 
     // Estados para los campos del cliente
     const [fullName, setFullName] = useState("");
@@ -100,12 +102,10 @@ export default function CheckoutForm() {
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    items: [
-                        {
-                            productId: product.id,
-                            quantity: 1,
-                        },
-                    ],
+                    items: cartItems.map((item) => ({
+                        productId: item.id,
+                        quantity: item.quantity,
+                    })),
                 }),
             });
 
@@ -126,6 +126,7 @@ export default function CheckoutForm() {
     return (
         <form onSubmit={handleSubmit}>
             <Grid container spacing={4} alignItems="flex-start" justifyContent="space-between" wrap="nowrap">
+
                 {/* 1 - Cliente */}
                 <Grid item xs={4}>
                     <Paper sx={{ p: 3, backgroundColor: "rgba(20, 20, 60, 0.7)", color: "#fff", borderRadius: 2 }}>
@@ -175,7 +176,7 @@ export default function CheckoutForm() {
                     </Paper>
                 </Grid>
 
-                {/* 3 - Producto + botón */}
+                {/* 3 - Resumen de productos */}
                 <Grid item xs={4}>
                     <Paper sx={{
                         p: 3,
@@ -189,16 +190,20 @@ export default function CheckoutForm() {
                     }}>
                         <Box>
                             <Typography variant="h6" fontFamily="'Orbitron', sans-serif" mb={2}>
-                                Producto
+                                Resumen de Compra
                             </Typography>
-                            <Typography variant="body1" mb={1}>
-                                Producto: <strong>{product?.description || "Sin nombre"}</strong>
-                            </Typography>
-                            <Typography variant="body1" mb={1}>
-                                Precio: <strong>${product?.price?.toLocaleString() || "0"}</strong>
-                            </Typography>
-                            <Typography variant="body2" mb={2}>
-                                Cantidad: 1 unidad
+
+                            {cartItems.map((item) => (
+                                <Box key={item.id} mb={2}>
+                                    <Typography variant="body1">Producto: <strong>{item.name}</strong></Typography>
+                                    <Typography variant="body1">Precio: ${item.price.toFixed(2)}</Typography>
+                                    <Typography variant="body2">Cantidad: {item.quantity}</Typography>
+                                    <Divider sx={{ my: 1, borderColor: "#ccc" }} />
+                                </Box>
+                            ))}
+
+                            <Typography variant="h6" mt={2}>
+                                Total: ${total.toFixed(2)}
                             </Typography>
                         </Box>
 
@@ -229,4 +234,5 @@ export default function CheckoutForm() {
             </Grid>
         </form>
     );
+
 }
