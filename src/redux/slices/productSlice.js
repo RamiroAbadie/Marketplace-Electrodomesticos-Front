@@ -97,6 +97,7 @@ export const getProductsByPriceRange = createAsyncThunk(
     }
 );
 
+// Actualizar producto
 export const updateProduct = createAsyncThunk(
   "products/update",
   async ({ id, ...body }, thunkAPI) => {
@@ -125,6 +126,32 @@ export const deleteProduct = createAsyncThunk(
         }
     }
 );
+
+// Subir imágenes de un producto
+export const addImagesToProduct = createAsyncThunk(
+  "products/addImages",
+  /**
+   * @param {{ id: number, files: FileList }} payload
+   */
+  async ({ id, files }, thunkAPI) => {
+    try {
+      const formData = new FormData();
+      Array.from(files).forEach((f) => formData.append("images", f));
+
+      const { data } = await axiosInstance.post(
+        `/products/${id}/images`,          // endpoint backend
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      return data; // backend responde el producto actualizado (con images[])
+    } catch (err) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Error al subir imágenes"
+      );
+    }
+  }
+);
+
 
 const productSlice = createSlice({
     name: "products",
@@ -242,6 +269,10 @@ const productSlice = createSlice({
             .addCase(updateProduct.fulfilled, (s, a) => {
                 const i = s.products.findIndex(p => p.id === a.payload.id);
                 if (i !== -1) s.products[i] = a.payload;
+            })
+            .addCase(addImagesToProduct.fulfilled, (s, a) => {
+                const i = s.products.findIndex((p) => p.id === a.payload.id);
+                if (i !== -1) s.products[i] = a.payload;       // refresca imágenes
             });
     },
 });
