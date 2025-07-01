@@ -6,28 +6,33 @@ import { DataGrid } from "@mui/x-data-grid";
 import { getOrdersByUser } from "../../redux/slices/orderSlice";
 
 export default function UserOrdersList() {
-  const { id } = useParams();          // userId
+  const { id } = useParams();          // userId de la URL
   const dispatch = useDispatch();
 
   const { orders = [], loading } = useSelector((s) => s.orders);
   const [selected, setSelected] = useState(null); // orden seleccionada
 
-  /* ─────── Cargar órdenes al montar ─────── */
+  /* ─── Cargar órdenes al montar ─── */
   useEffect(() => {
     dispatch(getOrdersByUser(id));
   }, [dispatch, id]);
 
-  /* ─────── Enriquecemos filas con info derivada ─────── */
+  /* ─── Enriquecemos filas con info derivada ─── */
   const rows = useMemo(
     () =>
       orders.map((o) => {
         const items = o.items ?? [];
-        const total = items.reduce((sum, it) => {
-          const qty   = Number(it.quantity)   || 0;
-          const price = Number(it.unitPrice)  || 0;
-          return sum + qty * price;
-        }, 0);
+
+        /* total redondeado a 2 decimales */
+        const totalRaw = items.reduce(
+          (sum, it) => sum + Number(it.quantity) * Number(it.unitPrice),
+          0
+        );
+        const total = Number(totalRaw.toFixed(2));
+
+        /* listado de descripciones */
         const products = items.map((it) => it.description).join(", ");
+
         return {
           ...o,
           itemsCount: items.length,
@@ -38,7 +43,7 @@ export default function UserOrdersList() {
     [orders]
   );
 
-  /* ─────── Columnas de la tabla de órdenes ─────── */
+  /* ─── Columnas de la tabla de órdenes ─── */
   const orderColumns = [
     { field: "orderId", headerName: "ID", width: 80 },
     { field: "userName", headerName: "Usuario", width: 140 },
@@ -48,14 +53,21 @@ export default function UserOrdersList() {
       field: "total",
       headerName: "Total ($)",
       width: 120,
-      valueFormatter: (p) =>
-        typeof p.value === "number"
-        ? p.value.toLocaleString("es-AR", { minimumFractionDigits: 2 })
-        : p.value,
+
+      /* Pintamos la celda directamente */
+      renderCell: (p) => {
+        const val = p.row?.total;            // número (o undefined 1ª pasada)
+        if (val === undefined) return "";
+
+        return val.toLocaleString("es-AR", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      },
     },
   ];
 
-  /* ─────── Columnas de la tabla de ítems ─────── */
+  /* ─── Columnas de la tabla de ítems ─── */
   const itemColumns = [
     { field: "productId", headerName: "Producto ID", width: 120 },
     { field: "description", headerName: "Descripción", flex: 1 },
@@ -65,14 +77,14 @@ export default function UserOrdersList() {
       field: "unitPrice",
       headerName: "Precio unit.",
       width: 120,
-
-      /* Pintamos la celda directamente */
       renderCell: (p) => {
-        const raw = p.row?.unitPrice;          // "19999.99"  (string)
-        if (!raw) return "";                   // aún no llegó
-
+        const raw = p.row?.unitPrice;
+        if (!raw) return "";
         const num = Number(raw);
-        return num.toLocaleString("es-AR", { minimumFractionDigits: 2 });
+        return num.toLocaleString("es-AR", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
       },
     },
   ];
@@ -83,7 +95,7 @@ export default function UserOrdersList() {
         Órdenes del usuario #{id}
       </Typography>
 
-      {/* ────── Tabla de órdenes ────── */}
+      {/* ─── Tabla de órdenes ─── */}
       <DataGrid
         autoHeight
         rows={rows}
@@ -95,7 +107,7 @@ export default function UserOrdersList() {
         onRowClick={(params) => setSelected(params.row)}
       />
 
-      {/* ────── Tabla de ítems (solo si hay selección) ────── */}
+      {/* ─── Tabla de ítems (solo si hay selección) ─── */}
       {selected && (
         <>
           <Typography variant="subtitle1" sx={{ mt: 3, mb: 1 }}>
