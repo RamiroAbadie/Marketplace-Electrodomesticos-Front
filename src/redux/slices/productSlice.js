@@ -16,6 +16,12 @@ export const getAllProducts = createAsyncThunk(
     }
 );
 
+//Crear producto
+export const createProduct = createAsyncThunk('products/create', async (body) => {
+  const { data } = await axiosInstance.post('/products', body);
+  return data;
+});
+
 // Obtener producto por ID
 export const getProductById = createAsyncThunk(
     "products/getById",
@@ -91,6 +97,20 @@ export const getProductsByPriceRange = createAsyncThunk(
     }
 );
 
+export const updateProduct = createAsyncThunk(
+  "products/update",
+  async ({ id, ...body }, thunkAPI) => {
+    try {
+      const { data } = await axiosInstance.put(`/products/${id}`, body);
+      return data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Error al actualizar producto"
+      );
+    }
+  }
+);
+
 // Eliminar producto
 export const deleteProduct = createAsyncThunk(
     "products/delete",
@@ -136,7 +156,9 @@ const productSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
-
+            .addCase(createProduct.fulfilled, (s, a) => { 
+                s.list.push(a.payload); 
+            })
             .addCase(getProductById.pending, (state) => {
                 state.loading = true;
                 state.selectedProduct = null;
@@ -216,6 +238,10 @@ const productSlice = createSlice({
             .addCase(getProductsByPriceRange.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            })
+            .addCase(updateProduct.fulfilled, (s, a) => {
+                const i = s.products.findIndex(p => p.id === a.payload.id);
+                if (i !== -1) s.products[i] = a.payload;
             });
     },
 });
