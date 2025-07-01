@@ -66,6 +66,7 @@ const orderSlice = createSlice({
     },
     reducers: {
         clearOrderState: (state) => {
+            state.orders = [];
             state.selectedOrder = null;
             state.success = false;
             state.error = null;

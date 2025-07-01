@@ -88,7 +88,11 @@ export default function NavBar() {
                         color: "#ffffff",
                         textTransform: "none",
                         fontFamily: "'Orbitron', sans-serif",
-                        mr: 3
+                        mr: 3,
+                        "&:hover": {
+                            backgroundColor: "transparent",
+                            color: "#00b2ff",
+                        },
                     }}
                 >
                     Nexus&nbsp;Electronics
@@ -104,7 +108,10 @@ export default function NavBar() {
                         <Button
                             component={RouterLink}
                             to="/products"
-                            sx={{ color: "#fff", mr: -100 }}
+                            sx={{ color: "#fff","&:hover": {
+                                    backgroundColor: "transparent",
+                                    color: "#00b2ff",
+                                } , mr: -100 }}
                         >
                             Productos
                         </Button>
@@ -112,11 +119,17 @@ export default function NavBar() {
                         <Button
                             component={RouterLink}
                             to="/admin/add-product"
-                            sx={{ color: "#fff", mr: 1 }}
+                            sx={{ color: "#fff","&:hover": {
+                                    backgroundColor: "transparent",
+                                    color: "#00b2ff",
+                                }, mr: 1 }}
                         >
                             Control&nbsp;panel
                         </Button>
-                        <Button onClick={handleLogout} sx={{ color: "#fff" }}>
+                        <Button onClick={handleLogout} sx={{ "&:hover": {
+                                backgroundColor: "transparent",
+                                color: "#00b2ff",
+                            },color: "#fff" }}>
                             Cerrar&nbsp;sesión
                         </Button>
                     </>
@@ -130,7 +143,10 @@ export default function NavBar() {
                         <Button
                             component={RouterLink}
                             to="/products"
-                            sx={{ color: "#fff", mr: 1 }}
+                            sx={{ "&:hover": {
+                                    backgroundColor: "transparent",
+                                    color: "#00b2ff",
+                                },color: "#fff", mr: 1 }}
                         >
                             Productos
                         </Button>
@@ -138,18 +154,27 @@ export default function NavBar() {
                             component={RouterLink}
                             to="/cart"
                             startIcon={<ShoppingCart />}
-                            sx={{ color: "#fff", mr: 1 }}
+                            sx={{ "&:hover": {
+                                    backgroundColor: "transparent",
+                                    color: "#00b2ff",
+                                },color: "#fff", mr: 1 }}
                         >
                             Carrito
                         </Button>
                         <Button
                             component={RouterLink}
                             to="/profile"
-                            sx={{ color: "#fff", mr: 1 }}
+                            sx={{ "&:hover": {
+                                    backgroundColor: "transparent",
+                                    color: "#00b2ff",
+                                },color: "#fff", mr: 1 }}
                         >
                             Mi&nbsp;Cuenta
                         </Button>
-                        <Button onClick={handleLogout} sx={{ color: "#fff" }}>
+                        <Button onClick={handleLogout} sx={{ "&:hover": {
+                                backgroundColor: "transparent",
+                                color: "#00b2ff",
+                            },color: "#fff" }}>
                             Cerrar&nbsp;sesión
                         </Button>
                     </>
@@ -162,7 +187,10 @@ export default function NavBar() {
                         <Button
                             component={RouterLink}
                             to="/products"
-                            sx={{ color: "#fff", mr: 1 }}
+                            sx={{ "&:hover": {
+                                    backgroundColor: "transparent",
+                                    color: "#00b2ff",
+                                },color: "#fff", mr: 1 }}
                         >
                             Productos
                         </Button>
@@ -170,14 +198,20 @@ export default function NavBar() {
                         <Button
                             component={RouterLink}
                             to="/login"
-                            sx={{ color: "#fff", mr: 1 }}
+                            sx={{ "&:hover": {
+                                    backgroundColor: "transparent",
+                                    color: "#00b2ff",
+                                },color: "#fff", mr: 1 }}
                         >
                             Login
                         </Button>
                         <Button
                             component={RouterLink}
                             to="/register"
-                            sx={{ color: "#fff" }}
+                            sx={{ "&:hover": {
+                                    backgroundColor: "transparent",
+                                    color: "#00b2ff",
+                                },color: "#fff" }}
                         >
                             Crear&nbsp;cuenta
                         </Button>

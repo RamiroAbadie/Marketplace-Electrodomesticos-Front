@@ -2,6 +2,8 @@ import { Box, Button, Container, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export default function Home() {
+
+
   return (
     <>
       {/* HERO */}

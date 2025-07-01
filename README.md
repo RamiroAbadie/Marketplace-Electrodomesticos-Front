@@ -23,6 +23,9 @@ cd marketplace-frontend
 ```
 2️⃣ Instalá las dependencias:
 ```bash
+npm install @mui/x-data-grid
+```
+```bash
 npm install
 ```
 ```bash
