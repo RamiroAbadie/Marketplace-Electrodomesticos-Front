@@ -44,7 +44,7 @@ export default function CategoryForm({ open, onClose, initialData }) {
       dispatch(updateCategory({ id: initialData.id, ...data }));
     } else {
       /* Crear */
-      dispatch(createCategory(data));
+      dispatch(createCategory(data.description));
     }
     onClose();
   };

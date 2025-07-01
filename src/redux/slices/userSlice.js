@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../axiosInstance.js";
 
-/* ─────────  Thunks de autenticación  ───────── */
+/* ───────── Thunks de autenticación ───────── */
 
 export const registerUser = createAsyncThunk(
   "user/register",
@@ -34,13 +34,13 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-/* ─────────  Thunk NUEVO: lista de usuarios (panel admin)  ───────── */
+/* ───────── Thunk para lista de usuarios (admin) ───────── */
 
 export const fetchUsers = createAsyncThunk(
   "users/fetch",
   async (_, thunkAPI) => {
     try {
-      const { data } = await axiosInstance.get("/users"); // backend: GET /api/users
+      const { data } = await axiosInstance.get("/users");
       return data; // array de UserResponse
     } catch (err) {
       return thunkAPI.rejectWithValue(
@@ -50,64 +50,74 @@ export const fetchUsers = createAsyncThunk(
   }
 );
 
-/* ─────────  Estado inicial  ───────── */
+/* ───────── Estado inicial ───────── */
 
 const initialState = {
-  /* auth */
   user: null,
   token: null,
-
-  /* admin */
-  users: [],           // ← aquí guardamos la lista para el DataGrid
+  users: [],
   loading: false,
   error: null,
 };
 
-/* ─────────  Slice  ───────── */
+/* ───────── Slice ───────── */
 
 const userSlice = createSlice({
-  name: "users",       // el store lo registra como s.users
+  name: "user",
   initialState,
   reducers: {
-    logout: (s) => {
-      s.user = null;
-      s.token = null;
+    logout: (state) => {
+      state.user = null;
+      state.token = null;
+      localStorage.removeItem("token");
     },
   },
-  extraReducers: (b) => {
-    /* -------- register -------- */
-    b.addCase(registerUser.pending, (s) => { s.loading = true; s.error = null; })
-      .addCase(registerUser.fulfilled, (s, a) => {
-        s.loading = false;
-        s.user = a.payload.user;
-        s.token = a.payload.access_token;
+  extraReducers: (builder) => {
+    /* ----- register ----- */
+    builder
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
       })
-      .addCase(registerUser.rejected, (s, a) => {
-        s.loading = false;
-        s.error = a.payload || "Error registro";
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.access_token;
+        localStorage.setItem("token", action.payload.access_token);
       })
-
-      /* -------- login -------- */
-      .addCase(loginUser.pending, (s) => { s.loading = true; s.error = null; })
-      .addCase(loginUser.fulfilled, (s, a) => {
-        s.loading = false;
-        s.user = a.payload.user;
-        s.token = a.payload.access_token;
-      })
-      .addCase(loginUser.rejected, (s, a) => {
-        s.loading = false;
-        s.error = a.payload || "Error login";
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Error registro";
       })
 
-      /* -------- fetchUsers (nuevo) -------- */
-      .addCase(fetchUsers.pending, (s) => { s.loading = true; s.error = null; })
-      .addCase(fetchUsers.fulfilled, (s, a) => {
-        s.loading = false;
-        s.users = a.payload;
+      /* ----- login ----- */
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
       })
-      .addCase(fetchUsers.rejected, (s, a) => {
-        s.loading = false;
-        s.error = a.payload;
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.access_token;
+        localStorage.setItem("token", action.payload.access_token);
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Error login";
+      })
+
+      /* ----- fetchUsers (admin) ----- */
+      .addCase(fetchUsers.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.users = action.payload;
+      })
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
