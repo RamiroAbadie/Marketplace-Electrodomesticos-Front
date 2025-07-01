@@ -21,6 +21,7 @@ import DashboardHome from "./views/DashBoardHome";
 import ProductList from "./views/products/ProductList";
 import CategoryList from "./views/categories/CategoryList";
 import UserList from "./views/users/UserList";
+import UserOrdersList from "./views/users/UserOrdersList";
 
 function App() {
   return (
@@ -59,6 +60,7 @@ function App() {
             <Route path="products" element={<ProductList />} />
             <Route path="categories" element={<CategoryList />} />
             <Route path="users" element={<UserList />} />
+            <Route path="users/:id/orders" element={<UserOrdersList />} />
           </Route>
         </Route>
 

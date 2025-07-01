@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
 import { fetchUsers } from "../../redux/slices/userSlice";
 
 export default function UserList() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   /* ───────── state.user es la clave real de tu store ───────── */
   const { users = [], loading = false } = useSelector((s) => s.user); // ← aquí
@@ -22,6 +25,19 @@ export default function UserList() {
     { field: "lastname",  headerName: "Apellido",flex: 1 },
     { field: "email",     headerName: "Email",   flex: 1.5 },
     { field: "role",      headerName: "Rol",     width: 120 },
+    {
+      field: "actions",
+      type: "actions",
+      width: 90,
+      getActions: (params) => [
+        <GridActionsCellItem
+          key="view"
+          icon={<VisibilityIcon />}
+          label="Ver órdenes"
+          onClick={() => navigate(`/admin/users/${params.id}/orders`)}
+        />,
+      ],
+    },
   ];
 
   return (
