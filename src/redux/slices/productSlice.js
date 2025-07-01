@@ -184,7 +184,7 @@ const productSlice = createSlice({
                 state.error = action.payload;
             })
             .addCase(createProduct.fulfilled, (s, a) => { 
-                s.list.push(a.payload); 
+                s.list.push(a.payload); //  s.products.push(a.payload); ????????????
             })
             .addCase(getProductById.pending, (state) => {
                 state.loading = true;

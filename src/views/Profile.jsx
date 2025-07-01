@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Box, Typography, Paper, Divider } from "@mui/material";
+import {Box, Typography, Paper, Divider, Grid} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getOrdersByUser } from "../redux/slices/orderSlice.js";
@@ -9,14 +9,19 @@ export default function Profile() {
     const orders = useSelector((state) => state.orders.orders);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
+    const calcularTotalOrden = (items) => {
+        return items.reduce((total, item) => {
+            return total + item.quantity * parseFloat(item.unitPrice);
+        }, 0).toFixed(2);
+    };
+    console.log(orders)
     useEffect(() => {
         if (!user) {
             navigate("/login");
         } else {
             dispatch(getOrdersByUser(user.id));
         }
-    }, [user, dispatch, navigate]);
+    }, [user]);
 
     return (
         <Box
@@ -57,13 +62,22 @@ export default function Profile() {
                         <Typography variant="h6" gutterBottom>Mis Órdenes:</Typography>
 
                         {orders && orders.length > 0 ? (
-                            orders.map((order) => (
-                                <Box key={order.orderId} sx={{ mb: 2 }}>
-                                    <Typography variant="body2">Orden ID: {order.orderId}</Typography>
-                                    <Typography variant="body2">Total: ${order.totalAmount}</Typography>
-                                    <Divider sx={{ my: 1, borderColor: "#555" }} />
-                                </Box>
-                            ))
+
+
+                            <Grid container spacing={2}>
+                                {orders.map((order) => (
+                                    <Grid item xs={12} sm={6} key={order.orderId}>
+                                        <Paper sx={{ p: 2,color: "#fff", backgroundColor: "rgb(29,42,110)" }}>
+                                            <Typography variant="body2">Orden ID: {order.orderId}</Typography>
+                                            <Typography variant="body2">
+                                                Total: ${calcularTotalOrden(order.items)}
+                                            </Typography>
+                                        </Paper>
+                                    </Grid>
+                                ))}
+                            </Grid>
+
+
                         ) : (
                             <Typography variant="body2">No tenés órdenes registradas.</Typography>
                         )}

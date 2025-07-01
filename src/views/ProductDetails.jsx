@@ -15,6 +15,8 @@ export default function ProductDetails() {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const dispatch = useDispatch();
 
+    console.log("DISPATCH getOrdersByUser:", user.id);
+    console.log("El TOKEN", token);
     if (!product) {
         return (
             <Container sx={{ py: 10 }}>
