@@ -8,7 +8,7 @@ import {
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 
 import {
   getAllProducts,
@@ -17,104 +17,126 @@ import {
 } from "../../redux/slices/productSlice";
 import ProductForm from "./ProductForm";
 
+/* helpers */
+const toNum = (v) => (isFinite(v) ? Number(v) : 0);
+const fmt   = (v, o) =>
+  v == null ? "" : v.toLocaleString("es-AR", o);
+
 export default function ProductList() {
   const dispatch = useDispatch();
   const { products, loading } = useSelector((s) => s.products);
 
-  /* modal de editar/crear */
-  const [openForm, setOpenForm] = useState(false);
-  const [selected, setSelected] = useState(null);
-
-  /* snackbar éxito */
+  const [openForm, setOpenForm]   = useState(false);
+  const [selected, setSelected]   = useState(null);
   const [openSnack, setOpenSnack] = useState(false);
 
-  /* refs para cargar imágenes */
-  const fileRef = useRef(null);
+  const fileRef      = useRef(null);
   const productIdRef = useRef(null);
 
-  /* cargar productos al montar */
   useEffect(() => {
     dispatch(getAllProducts());
   }, [dispatch]);
 
-  /* ───── manejadores ───── */
-  const handleEdit = (row) => {
-    setSelected(row);
-    setOpenForm(true);
-  };
-
-  const handleDelete = (id) => {
-    if (confirm("¿Eliminar producto?")) dispatch(deleteProduct(id));
-  };
-
-  const triggerFile = (id) => {
-    productIdRef.current = id;
-    fileRef.current.click();
-  };
-
-  const handleUpload = (e) => {
-    const files = e.target.files;
-    if (files && files.length) {
-      dispatch(addImagesToProduct({ id: productIdRef.current, files }))
-        .unwrap()
-        .then(() => setOpenSnack(true))          // ← snackbar éxito
-        .catch(() => alert("Error al subir imágenes"));
-    }
-    e.target.value = null; // reset input
-  };
-
-  /* filas con cantidad de imágenes */
+  /* filas */
   const rows = useMemo(
     () =>
       products.map((p) => ({
         ...p,
         imageCount: Array.isArray(p.images) ? p.images.length : 0,
+        finalPrice: toNum(p.price) * (1 - toNum(p.discount) / 100),
       })),
     [products]
   );
 
-  /* columnas */
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
     { field: "description", headerName: "Descripción", flex: 1 },
-    { field: "price", headerName: "Precio", width: 120 },
-    { field: "stock", headerName: "Stock", width: 100 },
-    { field: "categoryDescription", headerName: "Categoría", flex: 1 },
+
+    /* Precio original */
     {
-      field: "imageCount",
-      headerName: "Imgs",
-      width: 90,
+      field: "price",
+      headerName: "Precio ($)",
+      width: 110,
+      valueGetter: ({ row }) => row ? toNum(row.price) : null,
+      valueFormatter: (p) => fmt(p?.value, { minimumFractionDigits: 2 }),
     },
+
+    /* Descuento % */
+    {
+      field: "discount",
+      headerName: "Desc. %",
+      width: 90,
+      valueGetter: ({ row }) => row ? toNum(row.discount) : null,
+      valueFormatter: (p) =>
+        p?.value == null
+          ? ""
+          : `${fmt(p.value, { maximumFractionDigits: 2 })}%`,
+    },
+
+    /* Precio con descuento */
+    {
+      field: "finalPrice",
+      headerName: "Precio c/ desc.",
+      width: 130,
+      valueGetter: ({ row }) => row ? toNum(row.finalPrice) : null,
+      valueFormatter: (p) => fmt(p?.value, { minimumFractionDigits: 2 }),
+    },
+
+    { field: "stock", headerName: "Stock", width: 90 },
+    { field: "categoryDescription", headerName: "Categoría", flex: 1 },
+    { field: "imageCount", headerName: "Imgs", width: 80 },
+
+    /* acciones */
     {
       field: "actions",
       type: "actions",
-      width: 130,
+      width: 140,
       getActions: (params) => [
         <GridActionsCellItem
           key="photos"
           icon={<AddPhotoAlternateIcon />}
           label="Agregar imágenes"
-          onClick={() => triggerFile(params.id)}
+          onClick={() => {
+            productIdRef.current = params.id;
+            fileRef.current.click();
+          }}
         />,
         <GridActionsCellItem
           key="edit"
           icon={<EditIcon />}
           label="Editar"
-          onClick={() => handleEdit(params.row)}
+          onClick={() => {
+            setSelected(params.row);
+            setOpenForm(true);
+          }}
         />,
         <GridActionsCellItem
           key="delete"
           icon={<DeleteIcon />}
           label="Eliminar"
-          onClick={() => handleDelete(params.id)}
+          onClick={() => {
+            if (confirm("¿Eliminar producto?"))
+              dispatch(deleteProduct(params.id));
+          }}
         />,
       ],
     },
   ];
 
+  /* subir imágenes */
+  const handleUpload = (e) => {
+    const files = e.target.files;
+    if (files?.length) {
+      dispatch(addImagesToProduct({ id: productIdRef.current, files }))
+        .unwrap()
+        .then(() => setOpenSnack(true))
+        .catch(() => alert("Error al subir imágenes"));
+    }
+    e.target.value = null;
+  };
+
   return (
     <Box>
-      {/* botón nuevo producto */}
       <Button
         variant="contained"
         sx={{ mb: 2 }}
@@ -126,7 +148,6 @@ export default function ProductList() {
         NUEVO PRODUCTO
       </Button>
 
-      {/* tabla de productos */}
       <DataGrid
         autoHeight
         rows={rows}
@@ -136,7 +157,6 @@ export default function ProductList() {
         disableRowSelectionOnClick
       />
 
-      {/* input oculto para subir imágenes */}
       <input
         type="file"
         ref={fileRef}
@@ -146,7 +166,6 @@ export default function ProductList() {
         onChange={handleUpload}
       />
 
-      {/* modal producto */}
       {openForm && (
         <ProductForm
           open={openForm}
@@ -155,7 +174,6 @@ export default function ProductList() {
         />
       )}
 
-      {/* snackbar éxito */}
       <Snackbar
         open={openSnack}
         autoHideDuration={3000}
