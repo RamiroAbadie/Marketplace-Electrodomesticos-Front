@@ -4,8 +4,7 @@ import productsReducer from "./slices/productSlice.js";
 import cartReducer from "./slices/cartSlice";
 import categoryReducer from "./slices/categorySlice";
 import orderReducer from "./slices/orderSlice.js";
-
-
+import axiosInstance from "../axiosInstance";
 
 export const store = configureStore({
     reducer: {
@@ -15,4 +14,12 @@ export const store = configureStore({
         categories: categoryReducer,
         orders: orderReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            thunk: {
+                extraArgument: axiosInstance, //  para acceder en los createAsyncThunk
+            },
+        }),
 });
+
+export default store;

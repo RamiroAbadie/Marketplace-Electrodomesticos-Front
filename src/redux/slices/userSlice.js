@@ -67,6 +67,7 @@ const userSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
+      //localStorage.removeItem("token");
     },
   },
   extraReducers: (builder) => {
@@ -80,6 +81,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.access_token;
+        //localStorage.setItem("token", action.payload.access_token);
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
@@ -95,6 +97,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.access_token;
+        //localStorage.setItem("token", action.payload.access_token);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
