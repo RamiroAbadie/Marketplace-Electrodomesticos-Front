@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/slices/cartSlice";
 import { useState } from "react";
 
-//const n = (v) => (isFinite(v) ? Number(v) : 0);
+const n = (v) => (isFinite(v) ? Number(v) : 0);
 
 export default function ProductDetails() {
   const { state } = useLocation();
@@ -23,37 +23,6 @@ export default function ProductDetails() {
   const admin = user?.role === "ADMIN";
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const dispatch = useDispatch();
-    // console.log("DISPATCH getOrdersByUser:", user.id);
-   // console.log("El TOKEN", token);
-    if (!product) {
-        return (
-            <Container sx={{ py: 10 }}>
-                <Typography variant="h5" color="error">
-                    ⚠️ Producto no disponible.
-                </Typography>
-            </Container>
-        );
-    }
-
-    const handleAddToCart = (e) => {
-        e.stopPropagation();
-
-        if (!logged) {
-            navigate("/login");
-            return;
-        }
-
-        dispatch(
-            addToCart({
-                id: product.id,
-                name: product.description,
-                price: product.price,
-                quantity: 1,
-            })
-        );
-
-        setOpenSnackbar(true); // mostrar mensaje
-    };
 
   if (!product) {
     return (
