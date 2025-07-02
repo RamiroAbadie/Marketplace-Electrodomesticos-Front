@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Snackbar, Alert } from "@mui/material";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -13,7 +13,7 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import {
   getAllProducts,
   deleteProduct,
-  addImagesToProduct,   // thunk que creaste
+  addImagesToProduct,
 } from "../../redux/slices/productSlice";
 import ProductForm from "./ProductForm";
 
@@ -22,8 +22,11 @@ export default function ProductList() {
   const { products, loading } = useSelector((s) => s.products);
 
   /* modal de editar/crear */
-  const [open, setOpen] = useState(false);
+  const [openForm, setOpenForm] = useState(false);
   const [selected, setSelected] = useState(null);
+
+  /* snackbar éxito */
+  const [openSnack, setOpenSnack] = useState(false);
 
   /* refs para cargar imágenes */
   const fileRef = useRef(null);
@@ -37,7 +40,7 @@ export default function ProductList() {
   /* ───── manejadores ───── */
   const handleEdit = (row) => {
     setSelected(row);
-    setOpen(true);
+    setOpenForm(true);
   };
 
   const handleDelete = (id) => {
@@ -52,12 +55,15 @@ export default function ProductList() {
   const handleUpload = (e) => {
     const files = e.target.files;
     if (files && files.length) {
-      dispatch(addImagesToProduct({ id: productIdRef.current, files }));
+      dispatch(addImagesToProduct({ id: productIdRef.current, files }))
+        .unwrap()
+        .then(() => setOpenSnack(true))          // ← snackbar éxito
+        .catch(() => alert("Error al subir imágenes"));
     }
     e.target.value = null; // reset input
   };
 
-  /* Construimos filas con imageCount */
+  /* filas con cantidad de imágenes */
   const rows = useMemo(
     () =>
       products.map((p) => ({
@@ -108,17 +114,19 @@ export default function ProductList() {
 
   return (
     <Box>
+      {/* botón nuevo producto */}
       <Button
         variant="contained"
         sx={{ mb: 2 }}
         onClick={() => {
           setSelected(null);
-          setOpen(true);
+          setOpenForm(true);
         }}
       >
         NUEVO PRODUCTO
       </Button>
 
+      {/* tabla de productos */}
       <DataGrid
         autoHeight
         rows={rows}
@@ -128,6 +136,7 @@ export default function ProductList() {
         disableRowSelectionOnClick
       />
 
+      {/* input oculto para subir imágenes */}
       <input
         type="file"
         ref={fileRef}
@@ -138,13 +147,29 @@ export default function ProductList() {
       />
 
       {/* modal producto */}
-      {open && (
+      {openForm && (
         <ProductForm
-          open={open}
-          onClose={() => setOpen(false)}
+          open={openForm}
+          onClose={() => setOpenForm(false)}
           initialData={selected}
         />
       )}
+
+      {/* snackbar éxito */}
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={3000}
+        onClose={() => setOpenSnack(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setOpenSnack(false)}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Imágenes cargadas correctamente ✅
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
