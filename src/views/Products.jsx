@@ -25,6 +25,8 @@ import {
 export default function Products() {
   const dispatch = useDispatch();
   const { products, loading } = useSelector((state) => state.products);
+  const { user } = useSelector((state) => state.user);
+  const token = useSelector((state) => state.user.token);
 
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({
@@ -34,6 +36,10 @@ export default function Products() {
     max: "",
   });
 
+
+  console.log(token)
+  console.log(user)
+  console.log(products)
   useEffect(() => {
     const delay = setTimeout(() => {
       if (search) {

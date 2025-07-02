@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../axiosInstance.js";
 
-/* ───────── Thunks de autenticación ───────── */
 
 export const registerUser = createAsyncThunk(
   "user/register",
@@ -34,7 +33,6 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-/* ───────── Thunk para lista de usuarios (admin) ───────── */
 
 export const fetchUsers = createAsyncThunk(
   "users/fetch",
@@ -50,7 +48,7 @@ export const fetchUsers = createAsyncThunk(
   }
 );
 
-/* ───────── Estado inicial ───────── */
+/* Slice inicial */
 
 const initialState = {
   user: null,
@@ -60,7 +58,7 @@ const initialState = {
   error: null,
 };
 
-/* ───────── Slice ───────── */
+/* Slice */
 
 const userSlice = createSlice({
   name: "user",

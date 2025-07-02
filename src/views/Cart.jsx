@@ -57,8 +57,10 @@ export default function Cart() {
                                         }}
                                     >
                                         <Box>
-                                            <Typography variant="h7">{item.name}</Typography>
-                                            <Typography variant="body2">
+                                            <Typography variant="h7" sx={{ mr: 2, flexGrow: 1 }}>
+                                                {item.name}
+                                            </Typography>
+                                            <Typography variant="body2" sx={{ mb: 0.5 }}>
                                                 Cantidad: {item.quantity}
                                             </Typography>
                                             <Typography variant="body2">
@@ -66,7 +68,7 @@ export default function Cart() {
                                             </Typography>
                                         </Box>
                                         <Box sx={{ textAlign: "right" }}>
-                                            <Typography variant="subtitle1">
+                                            <Typography variant="subtitle1" sx={{ whiteSpace: "nowrap" }}>
                                                 Subtotal: ${(item.quantity * item.price).toFixed(2)}
                                             </Typography>
                                             <Button
