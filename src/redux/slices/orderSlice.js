@@ -1,20 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from "../../axiosInstance";
+
+/* ──────────────── THUNKS ──────────────── */
 
 // Crear orden
 export const createOrder = createAsyncThunk(
     "orders/create",
     async (orderData, thunkAPI) => {
-        const state = thunkAPI.getState();
-        const token = state.user.token;
-
+        const axios = thunkAPI.extra;
         try {
-            const res = await axiosInstance.post("/orders", orderData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            return res.data;
+            const { data } = await axios.post("/orders", orderData);
+            return data;
         } catch (err) {
             return thunkAPI.rejectWithValue(
                 err.response?.data?.message || "Error al crear la orden"
@@ -23,14 +18,14 @@ export const createOrder = createAsyncThunk(
     }
 );
 
-
 // Obtener orden por ID
 export const getOrderById = createAsyncThunk(
     "orders/getById",
     async (id, thunkAPI) => {
+        const axios = thunkAPI.extra;
         try {
-            const res = await axiosInstance.get(`/orders/${id}`);
-            return res.data;
+            const { data } = await axios.get(`/orders/${id}`);
+            return data;
         } catch (err) {
             return thunkAPI.rejectWithValue(
                 err.response?.data?.message || "Error al obtener la orden"
@@ -39,13 +34,14 @@ export const getOrderById = createAsyncThunk(
     }
 );
 
-// Obtener órdenes por usuario (solo admin)
+// Obtener órdenes por usuario
 export const getOrdersByUser = createAsyncThunk(
     "orders/getByUser",
     async (userId, thunkAPI) => {
+        const axios = thunkAPI.extra;
         try {
-            const res = await axiosInstance.get(`/orders/user/${userId}`);
-            return res.data;
+            const { data } = await axios.get(`/orders/user/${userId}`);
+            return data;
         } catch (err) {
             return thunkAPI.rejectWithValue(
                 err.response?.data?.message || "Error al obtener órdenes del usuario"
@@ -54,7 +50,8 @@ export const getOrdersByUser = createAsyncThunk(
     }
 );
 
-// Slice
+/* ──────────────── SLICE ──────────────── */
+
 const orderSlice = createSlice({
     name: "orders",
     initialState: {
@@ -74,7 +71,7 @@ const orderSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            // Crear orden
+            // CREATE
             .addCase(createOrder.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -90,7 +87,7 @@ const orderSlice = createSlice({
                 state.error = action.payload;
             })
 
-            // Obtener por ID
+            // GET BY ID
             .addCase(getOrderById.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -104,7 +101,7 @@ const orderSlice = createSlice({
                 state.error = action.payload;
             })
 
-            // Obtener por usuario
+            // GET BY USER
             .addCase(getOrdersByUser.pending, (state) => {
                 state.loading = true;
                 state.error = null;

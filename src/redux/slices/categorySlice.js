@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from "../../axiosInstance";
 
 // GET todas las categorías
 export const getAllCategories = createAsyncThunk(
     "categories/getAll",
     async (_, thunkAPI) => {
+        const axios = thunkAPI.extra;
         try {
-            const res = await axiosInstance.get("/categories");
+            const res = await axios.get("/categories");
             return res.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(
@@ -20,8 +20,9 @@ export const getAllCategories = createAsyncThunk(
 export const getCategoryById = createAsyncThunk(
     "categories/getById",
     async (id, thunkAPI) => {
+        const axios = thunkAPI.extra;
         try {
-            const res = await axiosInstance.get(`/categories/${id}`);
+            const res = await axios.get(`/categories/${id}`);
             return res.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(
@@ -35,8 +36,9 @@ export const getCategoryById = createAsyncThunk(
 export const createCategory = createAsyncThunk(
     "categories/create",
     async (description, thunkAPI) => {
+        const axios = thunkAPI.extra;
         try {
-            const res = await axiosInstance.post("/categories", { description });
+            const res = await axios.post("/categories", { description });
             return res.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(
@@ -50,8 +52,9 @@ export const createCategory = createAsyncThunk(
 export const updateCategory = createAsyncThunk(
     "categories/update",
     async ({ id, description }, thunkAPI) => {
+        const axios = thunkAPI.extra;
         try {
-            const res = await axiosInstance.put(`/categories/${id}`, { description });
+            const res = await axios.put(`/categories/${id}`, { description });
             return res.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(
@@ -65,8 +68,9 @@ export const updateCategory = createAsyncThunk(
 export const deleteCategory = createAsyncThunk(
     "categories/delete",
     async (id, thunkAPI) => {
+        const axios = thunkAPI.extra;
         try {
-            await axiosInstance.delete(`/categories/${id}`);
+            await axios.delete(`/categories/${id}`);
             return id;
         } catch (err) {
             return thunkAPI.rejectWithValue(
@@ -75,7 +79,6 @@ export const deleteCategory = createAsyncThunk(
         }
     }
 );
-
 
 // Slice
 const categorySlice = createSlice({
@@ -150,7 +153,9 @@ const categorySlice = createSlice({
             .addCase(updateCategory.fulfilled, (state, action) => {
                 state.loading = false;
                 state.success = true;
-                const i = state.categories.findIndex(cat => cat.id === action.payload.id);
+                const i = state.categories.findIndex(
+                    (cat) => cat.id === action.payload.id
+                );
                 if (i !== -1) state.categories[i] = action.payload;
             })
             .addCase(updateCategory.rejected, (state, action) => {
@@ -167,7 +172,9 @@ const categorySlice = createSlice({
             .addCase(deleteCategory.fulfilled, (state, action) => {
                 state.loading = false;
                 state.success = true;
-                state.categories = state.categories.filter(cat => cat.id !== action.payload);
+                state.categories = state.categories.filter(
+                    (cat) => cat.id !== action.payload
+                );
             })
             .addCase(deleteCategory.rejected, (state, action) => {
                 state.loading = false;

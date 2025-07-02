@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./slices/userSlice.js";
-import productsReducer from "./slices/productSlice.js";
+import userReducer from "./slices/userSlice";
+import productsReducer from "./slices/productSlice";
 import cartReducer from "./slices/cartSlice";
 import categoryReducer from "./slices/categorySlice";
-import orderReducer from "./slices/orderSlice.js";
-import axiosInstance from "../axiosInstance";
+import orderReducer from "./slices/orderSlice";
+import axiosInstance from "../axiosInstance"; // inyectar axios
 
 export const store = configureStore({
     reducer: {
@@ -17,7 +17,7 @@ export const store = configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             thunk: {
-                extraArgument: axiosInstance, //  para acceder en los createAsyncThunk
+                extraArgument: axiosInstance,
             },
         }),
 });

@@ -15,7 +15,6 @@ const AUTH_PATHS = ["/auth", "/v1/auth"];
 axiosInstance.interceptors.request.use((config) => {
   const token = store.getState().user.token;
 
-  // No agregar Authorization si es una llamada de autenticación
   const isAuthCall = AUTH_PATHS.some((p) => config.url.includes(p));
   if (isAuthCall) return config;
 
