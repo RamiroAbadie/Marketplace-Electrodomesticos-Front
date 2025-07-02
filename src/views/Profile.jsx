@@ -6,6 +6,8 @@ import { getOrdersByUser } from "../redux/slices/orderSlice.js";
 
 export default function Profile() {
     const { user } = useSelector((state) => state.user);
+    const { token } = useSelector((state) => state.user);
+
     const orders = useSelector((state) => state.orders.orders);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -14,9 +16,11 @@ export default function Profile() {
             return total + item.quantity * parseFloat(item.unitPrice);
         }, 0).toFixed(2);
     };
+    console.log(token)
+    console.log(user)
     console.log(orders)
     useEffect(() => {
-        if (!user) {
+        if (!token) {
             navigate("/login");
         } else {
             dispatch(getOrdersByUser(user.id));
@@ -67,11 +71,18 @@ export default function Profile() {
                             <Grid container spacing={2}>
                                 {orders.map((order) => (
                                     <Grid item xs={12} sm={6} key={order.orderId}>
-                                        <Paper sx={{ p: 2,color: "#fff", backgroundColor: "rgb(29,42,110)" }}>
+                                        <Paper sx={{ p: 2, color: "#fff", backgroundColor: "rgb(29,42,110)" }}>
                                             <Typography variant="body2">Orden ID: {order.orderId}</Typography>
-                                            <Typography variant="body2">
+                                            <Typography variant="body2" gutterBottom>
                                                 Total: ${calcularTotalOrden(order.items)}
                                             </Typography>
+
+                                            {/* Detalle de productos */}
+                                            {order.items.map((item, index) => (
+                                                <Typography key={index} variant="body2">
+                                                    • {item.description} — x{item.quantity} – ${parseFloat(item.unitPrice).toFixed(2)}
+                                                </Typography>
+                                            ))}
                                         </Paper>
                                     </Grid>
                                 ))}

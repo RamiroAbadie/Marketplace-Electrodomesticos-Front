@@ -36,6 +36,8 @@ export default function RegisterForm() {
                 registerUser({ firstname, lastname, email, password })
             ).unwrap();
 
+            console.log("RESULT REGISTRO:", result);
+
             console.log("Registro exitoso:", result.user);
             navigate("/");
         } catch (err) {
