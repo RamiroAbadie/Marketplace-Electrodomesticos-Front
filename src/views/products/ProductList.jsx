@@ -17,10 +17,10 @@ import {
 } from "../../redux/slices/productSlice";
 import ProductForm from "./ProductForm";
 
-/* helpers */
+/* helpers ─────────────────────────────── */
 const toNum = (v) => (isFinite(v) ? Number(v) : 0);
 const fmt   = (v, o) =>
-  v == null ? "" : v.toLocaleString("es-AR", o);
+  v == null ? "" : Number(v).toLocaleString("es-AR", o);
 
 export default function ProductList() {
   const dispatch = useDispatch();
@@ -33,11 +33,12 @@ export default function ProductList() {
   const fileRef      = useRef(null);
   const productIdRef = useRef(null);
 
+  /* cargar productos al montar */
   useEffect(() => {
     dispatch(getAllProducts());
   }, [dispatch]);
 
-  /* filas */
+  /* filas enriquecidas */
   const rows = useMemo(
     () =>
       products.map((p) => ({
@@ -48,17 +49,18 @@ export default function ProductList() {
     [products]
   );
 
+  /* columnas */
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
-    { field: "description", headerName: "Descripción", flex: 1 },
+    { field: "description", headerName: "Descripción", flex: 2, minWidth: 220 },
 
     /* Precio original */
     {
       field: "price",
       headerName: "Precio ($)",
       width: 110,
-      valueGetter: ({ row }) => row ? toNum(row.price) : null,
-      valueFormatter: (p) => fmt(p?.value, { minimumFractionDigits: 2 }),
+      renderCell: ({ row }) =>
+        fmt(row.price, { minimumFractionDigits: 2 }),
     },
 
     /* Descuento % */
@@ -66,11 +68,10 @@ export default function ProductList() {
       field: "discount",
       headerName: "Desc. %",
       width: 90,
-      valueGetter: ({ row }) => row ? toNum(row.discount) : null,
-      valueFormatter: (p) =>
-        p?.value == null
+      renderCell: ({ row }) =>
+        row.discount == null
           ? ""
-          : `${fmt(p.value, { maximumFractionDigits: 2 })}%`,
+          : `${fmt(row.discount, { maximumFractionDigits: 2 })}%`,
     },
 
     /* Precio con descuento */
@@ -78,12 +79,12 @@ export default function ProductList() {
       field: "finalPrice",
       headerName: "Precio c/ desc.",
       width: 130,
-      valueGetter: ({ row }) => row ? toNum(row.finalPrice) : null,
-      valueFormatter: (p) => fmt(p?.value, { minimumFractionDigits: 2 }),
+      renderCell: ({ row }) =>
+        fmt(row.finalPrice, { minimumFractionDigits: 2 }),
     },
 
     { field: "stock", headerName: "Stock", width: 90 },
-    { field: "categoryDescription", headerName: "Categoría", flex: 1 },
+    { field: "categoryDescription", headerName: "Categoría", flex: 2, minWidth: 220 },
     { field: "imageCount", headerName: "Imgs", width: 80 },
 
     /* acciones */
@@ -157,6 +158,7 @@ export default function ProductList() {
         disableRowSelectionOnClick
       />
 
+      {/* input oculto para imágenes */}
       <input
         type="file"
         ref={fileRef}
@@ -166,6 +168,7 @@ export default function ProductList() {
         onChange={handleUpload}
       />
 
+      {/* modal producto */}
       {openForm && (
         <ProductForm
           open={openForm}
@@ -174,6 +177,7 @@ export default function ProductList() {
         />
       )}
 
+      {/* snackbar éxito */}
       <Snackbar
         open={openSnack}
         autoHideDuration={3000}

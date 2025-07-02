@@ -20,11 +20,11 @@ export default function UserList() {
 
   /* columnas */
   const columns = [
-    { field: "id",        headerName: "ID",      width: 70 },
-    { field: "firstname", headerName: "Nombre",  flex: 1 },
-    { field: "lastname",  headerName: "Apellido",flex: 1 },
-    { field: "email",     headerName: "Email",   flex: 1.5 },
-    { field: "role",      headerName: "Rol",     width: 120 },
+    { field: "id",        headerName: "ID", width: 70 },
+    { field: "firstname", headerName: "Nombre",  flex: 2, minWidth: 220 },
+    { field: "lastname",  headerName: "Apellido", flex: 2, minWidth: 220 },
+    { field: "email",     headerName: "Email", flex: 2, minWidth: 220 },
+    { field: "role",      headerName: "Rol", width: 120 },
     {
       field: "actions",
       type: "actions",
