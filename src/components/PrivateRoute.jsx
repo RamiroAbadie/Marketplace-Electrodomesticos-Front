@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 export default function PrivateRoute({ adminOnly = false }) {
   const { token, user } = useSelector((state) => state.user);
 
-  // Paso 1: mientras no cargó ni siquiera null, no renderizar nada
+  // Paso 1: mientras no cargo ni siquiera null, no renderizar nada
   if (token === undefined || user === undefined) {
     return null;
   }

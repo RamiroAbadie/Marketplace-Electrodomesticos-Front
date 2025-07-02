@@ -20,7 +20,7 @@ export default function NavBar() {
     const { user, token } = useSelector((state) => state.user);
 
     const logged = Boolean(token);
-    const admin = user?.role === "ADMIN"; // o "ROLE_ADMIN" si tu backend lo manda así
+    const admin = user?.role === "ADMIN";
 
     const handleLogout = () => {
         dispatch(logout());

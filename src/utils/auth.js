@@ -1,8 +1,3 @@
-// ------------------------------------------------------------------
-// utils/auth.js
-// • Manejo del JWT (localStorage)
-// • Función isAdmin() acepta "ROLE_ADMIN" o simplemente "ADMIN"
-// ------------------------------------------------------------------
 import { jwtDecode } from "jwt-decode";
 
 let cache = null; // evita decodificar muchas veces

@@ -37,7 +37,7 @@ export default function FilterSidebar({ onApply }) {
         max: "",
     });
 
-    // Cargar categorías desde Redux
+    // Cargar categorias desde Redux
     useEffect(() => {
         dispatch(getAllCategories());
     }, [dispatch]);
@@ -106,7 +106,7 @@ export default function FilterSidebar({ onApply }) {
                     Filtros
                 </Typography>
 
-                {/* Categoría */}
+                {/* Categoria */}
                 <Typography fontWeight={500} mb={0.5}>
                     Categoría
                 </Typography>

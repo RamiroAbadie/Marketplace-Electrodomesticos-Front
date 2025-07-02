@@ -17,7 +17,11 @@ import {
 } from "../../redux/slices/productSlice";
 import ProductForm from "./ProductForm";
 
-/* helpers ─────────────────────────────── */
+// Aca se encuentra y fue destruido el famoso bug de las celdas vacias
+//(relacinado al renderizado del DataGrid a mi entender)
+// MODIFICA A TU PROPIO RIESGO (cuidado) xd
+
+/* helpers */
 const toNum = (v) => (isFinite(v) ? Number(v) : 0);
 const fmt   = (v, o) =>
   v == null ? "" : Number(v).toLocaleString("es-AR", o);
@@ -124,7 +128,7 @@ export default function ProductList() {
     },
   ];
 
-  /* subir imágenes */
+  /* subir imagenes */
   const handleUpload = (e) => {
     const files = e.target.files;
     if (files?.length) {
@@ -158,7 +162,7 @@ export default function ProductList() {
         disableRowSelectionOnClick
       />
 
-      {/* input oculto para imágenes */}
+      {/* input oculto para imagenes */}
       <input
         type="file"
         ref={fileRef}
@@ -177,7 +181,7 @@ export default function ProductList() {
         />
       )}
 
-      {/* snackbar éxito */}
+      {/* snackbar exito */}
       <Snackbar
         open={openSnack}
         autoHideDuration={3000}

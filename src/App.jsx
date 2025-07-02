@@ -29,7 +29,7 @@ function App() {
       <NavBar />
 
       <Routes>
-        {/* ────────── Rutas públicas ────────── */}
+        {/* ────────── Rutas publicas ────────── */}
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
         <Route path="/product/:id" element={<ProductDetails />} />
@@ -49,11 +49,11 @@ function App() {
           }
         />
 
-        {/* ────────── Panel de administración ────────── */}
+        {/* ────────── Panel de administracion ────────── */}
         <Route element={<PrivateRoute adminOnly />}>
           {/* layout contenedor con sidebar / appbar */}
           <Route path="/admin/*" element={<AdminLayout />}>
-            {/* índice: /admin */}
+            {/* indice: /admin */}
             <Route index element={<DashboardHome />} />
 
             {/* sub-rutas: /admin/products, /admin/categories, /admin/users */}
@@ -64,7 +64,7 @@ function App() {
           </Route>
         </Route>
 
-        {/* fallback 404 opcional */}
+        {/* 404 (para todo el resto) */}
         <Route path="*" element={<h2 style={{ padding: "2rem" }}>404 – Página no encontrada</h2>} />
       </Routes>
     </>

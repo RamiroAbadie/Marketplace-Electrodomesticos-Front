@@ -34,7 +34,7 @@ export const getOrderById = createAsyncThunk(
     }
 );
 
-// Obtener órdenes por usuario
+// Obtener ordenes por usuario
 export const getOrdersByUser = createAsyncThunk(
     "orders/getByUser",
     async (userId, thunkAPI) => {

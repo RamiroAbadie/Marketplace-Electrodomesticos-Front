@@ -1,7 +1,7 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import store from "./redux/store";
-import { logout } from "./redux/slices/userSlice"; // Asegurate que esto está exportado
+import { logout } from "./redux/slices/userSlice";
 
 
 const axiosInstance = axios.create({
@@ -15,6 +15,8 @@ const AUTH_PATHS = ["/auth", "/v1/auth"];
 axiosInstance.interceptors.request.use((config) => {
   const token = store.getState().user.token;
 
+  //TOCAR CON CUIDADO QUE SE ROMPE
+  //Ya anda
   const isAuthCall = AUTH_PATHS.some((p) => config.url.includes(p));
   if (isAuthCall) return config;
 
@@ -26,11 +28,11 @@ axiosInstance.interceptors.request.use((config) => {
       if (exp >= now) {
         config.headers.Authorization = `Bearer ${token}`;
       } else {
-        // Token vencido → limpiar Redux
+        // Token vencido
         store.dispatch(logout());
       }
     } catch {
-      // Token corrupto → limpiar Redux
+      // Token corrupto
       store.dispatch(logout());
     }
   }

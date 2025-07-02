@@ -16,7 +16,7 @@ import {
   updateCategory,
 } from "../../redux/slices/categorySlice";
 
-/* ──────── Validación con yup ──────── */
+/* ──────── Validacion ──────── */
 const schema = yup.object({
   description: yup
     .string()

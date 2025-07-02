@@ -18,7 +18,7 @@ const CARD_WIDTH = 260;
 const CARD_HEIGHT = 400;
 const IMG_HEIGHT = 180;
 
-/* helper seguro: string|undefined → Número */
+/* helper seguro: string|undefined -> Número */
 const n = (v) => (isFinite(v) ? Number(v) : 0);
 
 export default function ProductCard({ product }) {
@@ -30,7 +30,7 @@ export default function ProductCard({ product }) {
   const dispatch = useDispatch();
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  /* ─── cálculo precio ─── */
+  /* ─── calculo precio ─── */
   const price = n(product.price);
   const discount = n(product.discount);
   const hasDiscount = discount > 0;
@@ -79,7 +79,7 @@ export default function ProductCard({ product }) {
           boxShadow: 4,
         }}
       >
-        {/* Imágenes */}
+        {/* Imagenes */}
         <Box sx={{ width: "100%", height: IMG_HEIGHT, overflow: "hidden" }}>
           {multiple ? (
             <Carousel
@@ -118,7 +118,7 @@ export default function ProductCard({ product }) {
           )}
         </Box>
 
-        {/* Texto + botón */}
+        {/* Texto + boton */}
         <CardContent
           onClick={handleCardClick}
           sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}

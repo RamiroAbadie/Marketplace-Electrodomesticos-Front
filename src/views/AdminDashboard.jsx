@@ -76,7 +76,7 @@ export default function AdminDashboard() {
 
       if (selected.fileUpload) {
         const fd = new FormData();
-        files.forEach((f) => fd.append("images", f));      // clave = images
+        files.forEach((f) => fd.append("images", f)); // clave = images !!!!!!
         opts = { method:"POST", headers: authHeader(), body: fd };
       } else {
         opts = {
@@ -89,12 +89,10 @@ export default function AdminDashboard() {
       const res  = await fetch(`${BACKEND}${endpoint}`, opts);
       const text = await res.text();
 
-      /* — Safe-parse: solo si es JSON — */
       let processed = text;
       try {
         const json = JSON.parse(text);
 
-        // Si realmente es un array de productos, ocultamos images:
         if (Array.isArray(json)) {
           processed = JSON.stringify(
             json.map(({ images, ...r }) => r),
@@ -103,7 +101,7 @@ export default function AdminDashboard() {
         } else {
           processed = JSON.stringify(json, null, 2);
         }
-      } catch { /* no JSON, deja text crudo */ }
+      } catch { }
 
       setResponse(`Status: ${res.status} ${res.statusText}\n\n${processed}`);
     } catch (err) {
@@ -113,7 +111,7 @@ export default function AdminDashboard() {
     }
   };
 
-  /* ─── Al seleccionar acción ─── */
+  /* ─── Al seleccionar accion ─── */
   const selectAction = (a) => {
     setSelected(a);
     setParamId("");

@@ -12,22 +12,21 @@ export default function UserOrdersList() {
   const { orders = [], loading } = useSelector((s) => s.orders);
   const [selected, setSelected] = useState(null); // orden seleccionada
 
-  /* ─── Cargar órdenes al montar ─── */
+  /* ─── Cargar ordenes al montar ─── */
   useEffect(() => {
     dispatch(getOrdersByUser(id));
   }, [dispatch, id]);
 
-  /* ─── Enriquecemos filas con info derivada ─── */
   const rows = useMemo(
     () =>
       orders.map((o) => {
         const items = o.items ?? [];
 
-        /* total redondeado a 2 decimales */
         const totalRaw = items.reduce(
           (sum, it) => sum + Number(it.quantity) * Number(it.unitPrice),
           0
         );
+        /* redondeado a 2 decimales */
         const total = Number(totalRaw.toFixed(2));
 
         /* listado de descripciones */
@@ -56,7 +55,7 @@ export default function UserOrdersList() {
 
       /* Pintamos la celda directamente */
       renderCell: (p) => {
-        const val = p.row?.total;            // número (o undefined 1ª pasada)
+        const val = p.row?.total; // numero (o undefined 1er pasada)
         if (val === undefined) return "";
 
         return val.toLocaleString("es-AR", {
@@ -67,7 +66,7 @@ export default function UserOrdersList() {
     },
   ];
 
-  /* ─── Columnas de la tabla de ítems ─── */
+  /* ─── Columnas de la tabla de items ─── */
   const itemColumns = [
     { field: "productId", headerName: "Producto ID", width: 120 },
     { field: "description", headerName: "Descripción", flex: 1 },
@@ -95,7 +94,7 @@ export default function UserOrdersList() {
         Órdenes del usuario #{id}
       </Typography>
 
-      {/* ─── Tabla de órdenes ─── */}
+      {/* ─── Tabla de ordenes ─── */}
       <DataGrid
         autoHeight
         rows={rows}
@@ -107,7 +106,7 @@ export default function UserOrdersList() {
         onRowClick={(params) => setSelected(params.row)}
       />
 
-      {/* ─── Tabla de ítems (solo si hay selección) ─── */}
+      {/* ─── Tabla de items (solo si hay seleccion) ─── */}
       {selected && (
         <>
           <Typography variant="subtitle1" sx={{ mt: 3, mb: 1 }}>

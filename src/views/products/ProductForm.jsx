@@ -42,7 +42,7 @@ const schema = yup.object({
 export default function ProductForm({ open, onClose, initialData }) {
   const dispatch = useDispatch();
 
-  /* default values (incluye discount) */
+  /* default values */
   const {
     register,
     handleSubmit,
@@ -59,7 +59,7 @@ export default function ProductForm({ open, onClose, initialData }) {
   });
 
   const onSubmit = (data) => {
-    // valueAsNumber para precio, stock, discount
+    // para precio, stock, discount
     const payload = {
       ...data,
       price: Number(data.price),

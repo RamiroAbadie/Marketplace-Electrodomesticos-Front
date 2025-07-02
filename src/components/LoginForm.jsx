@@ -27,10 +27,9 @@ export default function LoginForm() {
         e.preventDefault();
 
         try {
-            // Disparar acción asincrónica
             const result = await dispatch(loginUser({ email, password })).unwrap();
             console.log("Login exitoso:", result.user);
-            // Redireccionar según el rol
+            // Redireccionar segun el rol
             navigate(result.user.role === "ADMIN" ? "/admin" : "/");
         } catch (err) {
             console.error("Login fallido:", err);

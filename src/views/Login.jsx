@@ -24,7 +24,7 @@ export default function Login() {
                 }}
             />
 
-            {/* CONTENIDO CENTRADO */}
+            {/* CONTENIDO CENTRADO (finalmente) (tocar con cuidado) */}
             <Container maxWidth="xs" sx={{ position: "relative", zIndex: 1 }}>
                 <Typography
                     variant="h4"

@@ -15,16 +15,12 @@ import CategoryForm from "./CategoryForm";
 export default function CategoryList() {
   const dispatch = useDispatch();
 
-  /* ------------- Redux state ------------- */
   const { categories, loading } = useSelector((s) => s.categories);
-  //  ^^^^^^^^^^^  ← Esta propiedad EXISTE en tu slice:
-  //                initialState = { categories: [], ... }
 
-  /* ------------- Local state ------------- */
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
 
-  /* ------------- Cargar al montar ------------- */
+  /* ------------- Carga ------------- */
   useEffect(() => {
     dispatch(getAllCategories());
   }, [dispatch]);
@@ -64,7 +60,7 @@ export default function CategoryList() {
         variant="contained"
         sx={{ mb: 2 }}
         onClick={() => {
-          setSelected(null);  // modo “crear”
+          setSelected(null);
           setOpen(true);
         }}
       >
@@ -73,7 +69,7 @@ export default function CategoryList() {
 
       <DataGrid
         autoHeight
-        rows={categories}          // ← la lista correcta
+        rows={categories}
         columns={columns}
         loading={loading}
         pageSize={10}

@@ -34,7 +34,7 @@ export default function ProductDetails() {
     );
   }
 
-  /* precio seguro */
+  /* calculo de precio */
   const price = n(product.price);
   const discount = n(product.discount);
   const hasDiscount = discount > 0;

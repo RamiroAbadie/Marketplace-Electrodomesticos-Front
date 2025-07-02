@@ -10,8 +10,7 @@ export default function UserList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  /* ───────── state.user es la clave real de tu store ───────── */
-  const { users = [], loading = false } = useSelector((s) => s.user); // ← aquí
+  const { users = [], loading = false } = useSelector((s) => s.user); 
 
   /* cargar al montar */
   useEffect(() => {

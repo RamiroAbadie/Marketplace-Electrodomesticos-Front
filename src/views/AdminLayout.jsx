@@ -44,7 +44,7 @@ export default function AdminLayout() {
       </Drawer>
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar /> {/* espaciado para el AppBar */}
+        <Toolbar /> {/* espacio para el gede del AppBar */}
         <Outlet />
       </Box>
     </Box>

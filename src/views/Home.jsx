@@ -6,7 +6,7 @@ export default function Home() {
 
   return (
     <>
-      {/* HERO */}
+      {/* HERO (se ve que se llama asi, si no no se como decirle) */}
       <Box
         sx={{
           width: "100vw",
@@ -74,7 +74,7 @@ export default function Home() {
           </Button>
         </Container>
 
-        {/* LOGO decorativo */}
+        {/* LOGO */}
         <Box
           component="img"
           src="/NexusElectronics Logo (tinify).png"
